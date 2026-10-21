@@ -27,7 +27,7 @@ def tablero_bien_formado(t : Tablero) -> bool:
 
 def posicion_en_tablero(pos : Posicion) -> bool:
     res:bool = False
-    if 0 < pos[0] < ALTO and 0 < pos[1] < ANCHO:
+    if 0 <= pos[0] <= ALTO and 0 <= pos[1] <= ANCHO:
         res = True
     return res
 
