@@ -26,10 +26,24 @@ def tablero_bien_formado(t : Tablero) -> bool:
     raise Exception("No implementado")
 
 def posicion_en_tablero(pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    # raise Exception("No implementado")
+    res:bool = False
+    if 0 <= pos[0] <= ALTO and 0 <= pos[1] <= ANCHO:
+        res = True
+    return res
 
+    
 def movimiento_bien_formado(m : Movimiento) -> bool:
-    raise Exception("No implementado")
+    # raise Exception("No implementado")
+    res: bool = False
+    if posicion_en_tablero(m.origen):
+        if m.accion == MOVER_A_SECAS and len(m.pasos) == 1:
+            res = True
+        elif m.accion == ARRASTRAR and len(m.pasos) == 2:
+            res = True
+        elif m.accion == EMPUJAR and len(m.pasos) == 2:
+            res = True
+    return res
 
 def juego_bien_formado(j : Juego) -> bool:
     raise Exception("No implementado")
