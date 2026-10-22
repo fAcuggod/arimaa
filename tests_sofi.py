@@ -182,6 +182,25 @@ class test_hay_pieza_de_color(unittest.TestCase):
     def test_hay_pieza_de_color_ok(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_pieza_de_color(t, Posicion(1, 4), DORADO))
+    def test_color_incorrecto(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_pieza_de_color(t, Posicion(1,4), PLATEADO))
+
+class test_hay_figura_de_color(unittest.TestCase):
+
+    def test_hay_figura_de_color_dorado_conejo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_figura_de_color(t, Posicion(1, 4), CONEJO, DORADO))
+    def test_color_incorrecto_conejo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_figura_de_color(t, Posicion(1,4), CONEJO, PLATEADO))
+    def test_hay_figura_de_color_ok_plateado(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_figura_de_color(t, Posicion(0, 0), CABALLO, DORADO))
+    def test_color_incorrecto_caballo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_figura_de_color(t, Posicion(0,0), CABALLO, PLATEADO))
+
 
 #### Ejercicio 3
 

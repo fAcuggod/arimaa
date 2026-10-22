@@ -85,10 +85,16 @@ def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
 #        print(t[pos.fila][pos.columna]) # Pieza(figura=CONEJO, color=DORADO)
         if t[pos.fila][pos.columna].figura == f:
             es_figura = True
-    for col in LISTA_DE_LOS_COLORES:
-        if t[pos.fila][pos.columna].color == col:
-            es_color = True
+    if t[pos.fila][pos.columna].color == col:
+        es_color = True
     return es_color and es_figura
+
+def hay_figura_de_color(t:Tablero, pos: Posicion, f: Figura, col: Color): 
+    #funcion auxiliar que se fija si está una figura especifica
+    res:bool = False
+    if hay_pieza_de_color(t, pos, col):
+        res = t[pos.fila][pos.columna].figura == f
+    return res
 
 #### Ejercicio 3
 
@@ -119,7 +125,10 @@ def hay_pieza(t : Tablero, pos : Posicion) -> bool:
 def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
     assert(hay_pieza(t, pos))
+    color_propio:Color = t[pos.fila][pos.columna].color
+#    if hay_pieza_de_color(t, pos, color_propio):
     raise Exception("No implementado")
+    # True <-> hayPiezaEnemigaMásDébilHacia (t, pos, d)
 """
 def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")

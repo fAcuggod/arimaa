@@ -184,6 +184,21 @@ class test_hay_pieza_de_color(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_pieza_de_color(t, Posicion(1, 4), DORADO))
 
+class test_hay_figura_de_color(unittest.TestCase):
+
+    def test_hay_figura_de_color_dorado_conejo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_figura_de_color(t, Posicion(1, 4), CONEJO, DORADO))
+    def test_color_incorrecto_conejo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_figura_de_color(t, Posicion(1,4), CONEJO, PLATEADO))
+    def test_hay_figura_de_color_ok_plateado(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_figura_de_color(t, Posicion(0, 0), CABALLO, DORADO))
+    def test_color_incorrecto_caballo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_figura_de_color(t, Posicion(0,0), CABALLO, PLATEADO))
+
 #### Ejercicio 3
 
 class test_hay_casilla_vacia_hacia(unittest.TestCase):
@@ -204,6 +219,15 @@ class test_hay_casilla_vacia_hacia(unittest.TestCase):
     def test_no_hay_casilla_vacia_hacia(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertFalse(hay_casilla_vacia_hacia(t, Posicion(0,0), ESTE))
+
+class test_hay_pieza(unittest.TestCase): #test de funcion auxiliar
+
+    def test_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_pieza(t, Posicion(0,0)))
+    def test_no_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_pieza(t, Posicion(4,4)))
 
 class test_hay_pieza_amiga_vecina(unittest.TestCase):
 
