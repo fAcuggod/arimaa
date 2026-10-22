@@ -135,6 +135,12 @@ class test_posicion_vecina_hacia(unittest.TestCase):
 
     def test_vecina_al_norte(self):
         self.assertEqual(posicion_vecina_hacia(Posicion(0, 0), NORTE), Posicion(1, 0))
+    def test_vecina_al_sur(self):
+        self.assertEqual(posicion_vecina_hacia(Posicion(1,0), SUR), Posicion(0,0))
+    def test_vecina_al_este(self):
+        self.assertEqual(posicion_vecina_hacia(Posicion(0, 0), ESTE), Posicion(0, 1))
+    def test_vecina_al_oeste(self):
+        self.assertEqual(posicion_vecina_hacia(Posicion(0,1), OESTE), Posicion(0,0))
 
 class test_son_posiciones_vecinas(unittest.TestCase):
 
@@ -165,12 +171,33 @@ class test_hay_casilla_vacia(unittest.TestCase):
     def test_casilla_vacia(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_casilla_vacia(t, Posicion(2, 1)))
+    def test_casilla_figura(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia(t, Posicion(0, 4)))
+    def test_todo_vacio(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia(t, Posicion(7,4)))
 
 class test_hay_pieza_de_color(unittest.TestCase):
 
     def test_hay_pieza_de_color_ok(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_pieza_de_color(t, Posicion(1, 4), DORADO))
+
+class test_hay_figura_de_color(unittest.TestCase):
+
+    def test_hay_figura_de_color_dorado_conejo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_figura_de_color(t, Posicion(1, 4), CONEJO, DORADO))
+    def test_color_incorrecto_conejo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_figura_de_color(t, Posicion(1,4), CONEJO, PLATEADO))
+    def test_hay_figura_de_color_ok_plateado(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_figura_de_color(t, Posicion(0, 0), CABALLO, DORADO))
+    def test_color_incorrecto_caballo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_figura_de_color(t, Posicion(0,0), CABALLO, PLATEADO))
 
 #### Ejercicio 3
 
@@ -189,6 +216,18 @@ class test_hay_casilla_vacia_hacia(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(hay_casilla_vacia_hacia(t, Posicion(0, 0), NORTE))
+    def test_no_hay_casilla_vacia_hacia(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia_hacia(t, Posicion(0,0), ESTE))
+
+class test_hay_pieza(unittest.TestCase): #test de funcion auxiliar
+
+    def test_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_pieza(t, Posicion(0,0)))
+    def test_no_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_pieza(t, Posicion(4,4)))
 
 class test_hay_pieza_amiga_vecina(unittest.TestCase):
 
@@ -205,6 +244,15 @@ class test_hay_pieza_amiga_vecina(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(hay_pieza_amiga_vecina(t, Posicion(4, 3)))
+
+class test_hay_pieza(unittest.TestCase): #test de funcion auxiliar
+
+    def test_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_pieza(t, Posicion(0,0)))
+    def test_no_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_pieza(t, Posicion(4,4)))
 
 class test_hay_pieza_enemiga_mas_debil_hacia(unittest.TestCase):
 
