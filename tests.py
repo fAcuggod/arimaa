@@ -201,6 +201,9 @@ class test_hay_casilla_vacia_hacia(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(hay_casilla_vacia_hacia(t, Posicion(0, 0), NORTE))
+    def test_no_hay_casilla_vacia_hacia(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia_hacia(t, Posicion(0,0), ESTE))
 
 class test_hay_pieza_amiga_vecina(unittest.TestCase):
 

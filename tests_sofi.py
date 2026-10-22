@@ -183,5 +183,28 @@ class test_hay_pieza_de_color(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_pieza_de_color(t, Posicion(1, 4), DORADO))
 
+#### Ejercicio 3
+
+class test_hay_casilla_vacia_hacia(unittest.TestCase):
+
+    def test_hay_casilla_vacia_hacia(self):
+        t = leer_tablero([
+              '-r----rr', #7
+              '-mrh----', #6
+              '-r---r--', #5
+              'd-EH---c', #4
+              '-M--hD-d', #3
+              '-R-e----', #2
+              '---H-R-C', #1
+              'R-R---RR', #0
+              #01234567
+            ])
+        self.assertTrue(hay_casilla_vacia_hacia(t, Posicion(0, 0), NORTE))
+    def test_no_hay_casilla_vacia_hacia(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia_hacia(t, Posicion(0,0), ESTE))
+
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

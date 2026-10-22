@@ -37,7 +37,6 @@ def posicion_en_tablero(pos : Posicion) -> bool:
         res = True
     return res
 
-    
 def movimiento_bien_formado(m : Movimiento) -> bool:
     # raise Exception("No implementado")
     res: bool = False
@@ -94,8 +93,13 @@ def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
 #### Ejercicio 3
 
 def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
-    raise Exception("No implementado")
-
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    res:bool = False
+    pos_vecina:Posicion = posicion_vecina_hacia(pos, d)
+    if hay_casilla_vacia(t,pos_vecina):
+        res = True
+    return res
+"""
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 
@@ -131,3 +135,4 @@ def hay_ganador_determinado(j : Juego) -> bool:
 def ganador_del_juego(j : Juego) -> Color:
     raise Exception("No implementado")
 
+"""
