@@ -63,6 +63,9 @@ def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
     return t[pos.fila][pos.columna] == VACIA
 
+LISTA_DE_TODAS_LAS_FIGURAS = [ELEFANTE, CAMELLO, CABALLO, PERRO, GATO, CONEJO]
+COLORES = [DORADO, PLATEADO]
+
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
     assert(not(hay_casilla_vacia(t, pos)))
