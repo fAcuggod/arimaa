@@ -65,6 +65,17 @@ def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
         res:Posicion = Posicion(pos.fila, pos.columna - 1)
     return res
 
+def es_posicion_vecina_hacia(pos: Posicion, d: Direccion, pos2: Posicion) -> bool:
+    # (func. aux) decide si dos posiciones pos y pos2 son vecinas en dirección d
+    if d == NORTE:
+        return pos2.fila == (pos.fila - 1) and pos2.columna == pos.columna
+    elif d == SUR:
+        return pos2.fila == (pos.fila + 1) and pos2.columna == pos.columna
+    elif d == ESTE:
+        return pos2.fila == pos.fila and pos2.columna == (pos.columna + 1)
+    else:
+        return pos2.fila == pos.fila and pos2.columna == (pos.columna - 1)
+
 def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
     assert(tablero_bien_formado(t) and posicion_en_tablero(p))
     return t[p.fila][p.columna]
@@ -129,9 +140,27 @@ def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion
 #    if hay_pieza_de_color(t, pos, color_propio):
     raise Exception("No implementado")
     # True <-> hayPiezaEnemigaMásDébilHacia (t, pos, d)
-"""
+
+def hay_pieza_enemiga_mas_fuerte_hacia(t: Tablero, pos: Posicion, d: Direccion) -> bool:
+    # (func. aux) decide si existe una fig_enemiga más fuerte en la dirección d de la posición pos
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert hay_pieza(t, pos)
+    col_propio: Color = t[pos.fila][pos.columna].color
+    fig_propia: Figura = t[pos.fila][pos.columna].figura
+    pos_vecina = posicion_vecina_hacia(pos, d)
+    if posicion_en_tablero(pos_vecina) and hay_pieza(t, pos_vecina):
+        if col_propio == t[pos_vecina.fila][pos_vecina.columna].color:
+            return False
+        return fuerza(fig_propia) < fuerza(t[pos_vecina.fila][pos_vecina.columna].figura)
+    return False
+
 def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert hay_pieza(t, pos)
+    for d in Direccion:
+        if hay_pieza_enemiga_mas_fuerte_hacia(t, pos, d):
+            return True
+    return False
 
 def hay_pieza_congelada(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
@@ -158,5 +187,3 @@ def hay_ganador_determinado(j : Juego) -> bool:
 
 def ganador_del_juego(j : Juego) -> Color:
     raise Exception("No implementado")
-
-"""

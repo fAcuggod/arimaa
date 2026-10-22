@@ -141,6 +141,25 @@ class test_posicion_vecina_hacia(unittest.TestCase):
         self.assertEqual(posicion_vecina_hacia(Posicion(0, 0), ESTE), Posicion(0, 1))
     def test_vecina_al_oeste(self):
         self.assertEqual(posicion_vecina_hacia(Posicion(0,1), OESTE), Posicion(0,0))
+        
+class test_es_posicion_vecina_hacia(unittest.TestCase):
+
+    def test_es_pos_vecina_norte(self):
+        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 0), NORTE, Posicion(0, 0)))
+    def test_no_es_pos_vecina_norte(self):
+        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 0), NORTE, Posicion(1, 1)))
+    def test_es_pos_vecina_sur(self):
+        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 0), SUR, Posicion(2, 0)))
+    def test_no_es_pos_vecina_sur(self):
+        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 0), SUR, Posicion(0, 0)))
+    def test_es_pos_vecina_este(self):
+        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 1), ESTE, Posicion(1, 2)))
+    def test_no_es_pos_vecina_este(self):
+        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 1), ESTE, Posicion(0, 1)))
+    def test_es_pos_vecina_oeste(self):
+        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 1), OESTE, Posicion(1, 0)))
+    def test_no_es_pos_vecina_oeste(self):
+        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 1), OESTE, Posicion(1, 2)))
 
 class test_son_posiciones_vecinas(unittest.TestCase):
 
@@ -270,6 +289,48 @@ class test_hay_pieza_enemiga_mas_debil_hacia(unittest.TestCase):
             ])
         self.assertTrue(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), OESTE))
 
+class test_hay_pieza_enemiga_mas_fuerte_hacia(unittest.TestCase):
+
+    def test_hay_pieza_enemiga_mas_fuerte_norte(self):
+        t = leer_tablero([
+              '-H------', #7
+              '-r------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(hay_pieza_enemiga_mas_fuerte_hacia(t, Posicion(6, 1), NORTE))
+    def test_no_hay_pieza_enemiga_mas_fuerte_norte(self):
+        t = leer_tablero([
+              '-H------', #7
+              '-r---r--', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertFalse(hay_pieza_enemiga_mas_fuerte_hacia(t, Posicion(6, 5), NORTE))
+    def test_pieza_vecina_es_amiga(self):
+        t = leer_tablero([
+              '-H---m--', #7
+              '-r---r--', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(hay_pieza_enemiga_mas_fuerte_hacia(t, Posicion(6, 5), NORTE))
+
 class test_hay_pieza_enemiga_mas_fuerte_vecina(unittest.TestCase):
 
     def test_hay_pieza_enemiga_mas_fuerte_vecina(self):
@@ -285,6 +346,19 @@ class test_hay_pieza_enemiga_mas_fuerte_vecina(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(hay_pieza_enemiga_mas_fuerte_vecina(t, Posicion(3, 1)))
+    def test_no_hay_pieza_enemiga_mas_fuerte_vecina(self):
+        t = leer_tablero([
+              '-H------', #7
+              '-r---r--', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(hay_pieza_enemiga_mas_fuerte_vecina(t, Posicion(6, 5)))
 
 class test_hay_pieza_congelada(unittest.TestCase):
 
