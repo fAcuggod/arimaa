@@ -37,8 +37,18 @@ def posicion_en_tablero(pos : Posicion) -> bool:
         res = True
     return res
 
+    
 def movimiento_bien_formado(m : Movimiento) -> bool:
-    raise Exception("No implementado")
+    # raise Exception("No implementado")
+    res: bool = False
+    if posicion_en_tablero(m.origen):
+        if m.accion == MOVER_A_SECAS and len(m.pasos) == 1:
+            res = True
+        elif m.accion == ARRASTRAR and len(m.pasos) == 2:
+            res = True
+        elif m.accion == EMPUJAR and len(m.pasos) == 2:
+            res = True
+    return res
 
 def juego_bien_formado(j : Juego) -> bool:
     return (tablero_bien_formado(j.tablero) and (0 <= j.pasos_consumidos) and (j.pasos_consumidos < MAX_PASOS))
@@ -57,7 +67,8 @@ def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
     return res
 
 def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
-    raise Exception("No implementado")
+    assert(tablero_bien_formado(t) and posicion_en_tablero(p))
+    return t[p.fila][p.columna]
 
 def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))

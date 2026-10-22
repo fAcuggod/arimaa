@@ -1,5 +1,5 @@
 import unittest
-from arimaa_maxi import *
+from arimaa import *
 
 def tablero_8x8_vacio():
     return leer_tablero([
@@ -86,6 +86,40 @@ class test_juego_bien_formado(unittest.TestCase):
     def test_juego_empezado(self):
         j = Juego(tablero_8x8_vacio(), DORADO, 3)
         self.assertTrue(juego_bien_formado(j))
+
+class test_posicion_en_tablero(unittest.TestCase):
+
+    def test_posicion_ok(self):
+        self.assertTrue(posicion_en_tablero(Posicion(5, 3)))
+    def test_borde_0_0(self):
+        self.assertTrue(posicion_en_tablero(Posicion(0,0)))
+    def test_borde_8_8(self):
+        self.assertTrue(posicion_en_tablero(Posicion(8,8)))
+    def test_afuera_fila(self):
+        self.assertFalse(posicion_en_tablero(Posicion(-2,3)))
+    def test_afuera_columna(self):
+        self.assertFalse(posicion_en_tablero(Posicion(4,11)))
+
+### ej 2
+
+class test_casilla_en_posicion(unittest.TestCase):
+
+    def test_casilla_en_posicion(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertEqual(casilla_en_posicion(t, Posicion(0, 0)), Pieza(CABALLO, DORADO))
+
+    def test_casilla_fuerapos(self):
+        t = tablero_8x8_vacio()
+        self.assertNotEqual(casilla_en_posicion(t, Posicion(0, 0)), Pieza(CABALLO, DORADO))
+
+    def test_casilla_mal(self):
+        t = tablero_3x2()
+        with self.assertRaises(AssertionError):
+            casilla_en_posicion(t, Posicion(0, 0)), Pieza(CABALLO, DORADO)
+
+    def test_casilla_color(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertNotEqual(casilla_en_posicion(t, Posicion(0,0)), Pieza(CABALLO, PLATEADO))
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
