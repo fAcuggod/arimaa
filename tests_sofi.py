@@ -204,7 +204,14 @@ class test_hay_casilla_vacia_hacia(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertFalse(hay_casilla_vacia_hacia(t, Posicion(0,0), ESTE))
 
+class test_hay_pieza(unittest.TestCase): #test de funcion auxiliar
 
+    def test_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_pieza(t, Posicion(0,0)))
+    def test_no_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_pieza(t, Posicion(4,4)))
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -221,6 +221,15 @@ class test_hay_pieza_amiga_vecina(unittest.TestCase):
             ])
         self.assertTrue(hay_pieza_amiga_vecina(t, Posicion(4, 3)))
 
+class test_hay_pieza(unittest.TestCase): #test de funcion auxiliar
+
+    def test_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(hay_pieza(t, Posicion(0,0)))
+    def test_no_hay_pieza(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_pieza(t, Posicion(4,4)))
+
 class test_hay_pieza_enemiga_mas_debil_hacia(unittest.TestCase):
 
     def test_hay_pieza_enemiga_mas_debil_hacia(self):

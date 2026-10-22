@@ -74,7 +74,7 @@ def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
     return t[pos.fila][pos.columna] == VACIA
 
 LISTA_DE_TODAS_LAS_FIGURAS = [ELEFANTE, CAMELLO, CABALLO, PERRO, GATO, CONEJO]
-COLORES = [DORADO, PLATEADO]
+LISTA_DE_LOS_COLORES = [DORADO, PLATEADO]
 
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
@@ -85,7 +85,7 @@ def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
 #        print(t[pos.fila][pos.columna]) # Pieza(figura=CONEJO, color=DORADO)
         if t[pos.fila][pos.columna].figura == f:
             es_figura = True
-    for col in COLORES:
+    for col in LISTA_DE_LOS_COLORES:
         if t[pos.fila][pos.columna].color == col:
             es_color = True
     return es_color and es_figura
@@ -103,7 +103,22 @@ def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 
+def hay_pieza(t : Tablero, pos : Posicion) -> bool:
+    hay_color:bool = False
+    hay_figura:bool = False   
+    if hay_casilla_vacia(t, pos):
+        return hay_color and hay_figura
+    for f in LISTA_DE_TODAS_LAS_FIGURAS:
+        if t[pos.fila][pos.columna].figura == f:
+            hay_figura = True
+    for col in LISTA_DE_LOS_COLORES:
+        if t[pos.fila][pos.columna].color == col:
+            hay_color = True
+    return hay_color and hay_figura
+
 def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert(hay_pieza(t, pos))
     raise Exception("No implementado")
 """
 def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
