@@ -75,7 +75,7 @@ class test_movimiento_bien_formado(unittest.TestCase):
 
 # EJERCICIO 2
 
-class test_es_posicion_vecina_hacia(unittest.TestCase):
+class test_es_posicion_vecina_hacia(unittest.TestCase): # (test func. aux)
 
     def test_es_pos_vecina_norte(self):
         self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 0), NORTE, Posicion(0, 0)))
@@ -96,7 +96,49 @@ class test_es_posicion_vecina_hacia(unittest.TestCase):
 
 # EJERCICIO 3
 
-class test_hay_pieza_enemiga_mas_fuerte_hacia(unittest.TestCase):
+class test_hay_pieza_enemiga_mas_debil_hacia(unittest.TestCase):
+
+    def test_hay_pieza_enemiga_mas_debil_hacia(self):
+        t = leer_tablero([
+              '--Hdm---', #7
+              'r--HhC--', #6
+              'e---R-C-', #5
+              'ME--d---', #4
+              'h--RDcRr', #3
+              'R-R-r--r', #2
+              '-RRcrRD-', #1
+              '--r---rr', #0
+              #01234567
+            ])
+        self.assertTrue(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), OESTE))
+    def test_no_hay_pieza(self):
+        t = leer_tablero([
+              '--Hdm---', #7
+              'r--HhC--', #6
+              'e---R-C-', #5
+              'ME--d---', #4
+              'h--RDcRr', #3
+              'R-R-r--r', #2
+              '-RMcrRD-', #1
+              '--r---rr', #0
+              #01234567
+            ])
+        self.assertFalse(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), NORTE))
+    def test_pieza_vecina_es_amiga(self):
+        t = leer_tablero([
+              '--Hdm---', #7
+              'r--HhC--', #6
+              'e---R-C-', #5
+              'ME--d---', #4
+              'h--RDcRr', #3
+              'R-R-r--r', #2
+              '-RMcrRD-', #1
+              '--r---rr', #0
+              #01234567
+            ])
+        self.assertFalse(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), ESTE))
+
+class test_hay_pieza_enemiga_mas_fuerte_hacia(unittest.TestCase): # (test func. aux)
 
     def test_hay_pieza_enemiga_mas_fuerte_norte(self):
         t = leer_tablero([

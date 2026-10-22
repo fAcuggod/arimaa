@@ -121,6 +121,7 @@ def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 
 def hay_pieza(t : Tablero, pos : Posicion) -> bool:
+    # (func. aux) decide si existe una pieza en el tablero t posición pos
     hay_color:bool = False
     hay_figura:bool = False   
     if hay_casilla_vacia(t, pos):
@@ -135,11 +136,15 @@ def hay_pieza(t : Tablero, pos : Posicion) -> bool:
 
 def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    assert(hay_pieza(t, pos))
-    color_propio:Color = t[pos.fila][pos.columna].color
-#    if hay_pieza_de_color(t, pos, color_propio):
-    raise Exception("No implementado")
-    # True <-> hayPiezaEnemigaMásDébilHacia (t, pos, d)
+    assert hay_pieza(t, pos)
+    col_propio: Color = t[pos.fila][pos.columna].color
+    fig_propia: Figura = t[pos.fila][pos.columna].figura
+    pos_vecina = posicion_vecina_hacia(pos, d)
+    if posicion_en_tablero(pos_vecina) and hay_pieza(t, pos_vecina):
+        if col_propio == t[pos_vecina.fila][pos_vecina.columna].color:
+            return False
+        return fuerza(fig_propia) > fuerza(t[pos_vecina.fila][pos_vecina.columna].figura)
+    return False
 
 def hay_pieza_enemiga_mas_fuerte_hacia(t: Tablero, pos: Posicion, d: Direccion) -> bool:
     # (func. aux) decide si existe una fig_enemiga más fuerte en la dirección d de la posición pos
