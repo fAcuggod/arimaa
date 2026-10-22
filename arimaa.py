@@ -37,8 +37,18 @@ def posicion_en_tablero(pos : Posicion) -> bool:
         res = True
     return res
 
+    
 def movimiento_bien_formado(m : Movimiento) -> bool:
-    raise Exception("No implementado")
+    # raise Exception("No implementado")
+    res: bool = False
+    if posicion_en_tablero(m.origen):
+        if m.accion == MOVER_A_SECAS and len(m.pasos) == 1:
+            res = True
+        elif m.accion == ARRASTRAR and len(m.pasos) == 2:
+            res = True
+        elif m.accion == EMPUJAR and len(m.pasos) == 2:
+            res = True
+    return res
 
 def juego_bien_formado(j : Juego) -> bool:
     return (tablero_bien_formado(j.tablero) and (0 <= j.pasos_consumidos) and (j.pasos_consumidos < MAX_PASOS))
@@ -46,17 +56,40 @@ def juego_bien_formado(j : Juego) -> bool:
 #### Ejercicio 2
 
 def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
-    raise Exception("No implementado")
+    if d == NORTE:
+        res:Posicion = Posicion(pos.fila + 1,pos.columna)
+    elif d == SUR:
+        res:Posicion = Posicion(pos.fila - 1, pos.columna)
+    elif d == ESTE:
+        res:Posicion = Posicion(pos.fila, pos.columna + 1)
+    else:
+        res:Posicion = Posicion(pos.fila, pos.columna - 1)
+    return res
 
 def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
     assert(tablero_bien_formado(t) and posicion_en_tablero(p))
     return t[p.fila][p.columna]
 
 def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    return t[pos.fila][pos.columna] == VACIA
+
+LISTA_DE_TODAS_LAS_FIGURAS = [ELEFANTE, CAMELLO, CABALLO, PERRO, GATO, CONEJO]
+COLORES = [DORADO, PLATEADO]
 
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
-    raise Exception("No implementado")
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert(not(hay_casilla_vacia(t, pos)))
+    es_figura:bool = False
+    es_color:bool = False
+    for f in LISTA_DE_TODAS_LAS_FIGURAS:
+#        print(t[pos.fila][pos.columna]) # Pieza(figura=CONEJO, color=DORADO)
+        if t[pos.fila][pos.columna].figura == f:
+            es_figura = True
+    for col in COLORES:
+        if t[pos.fila][pos.columna].color == col:
+            es_color = True
+    return es_color and es_figura
 
 #### Ejercicio 3
 
