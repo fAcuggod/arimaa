@@ -99,13 +99,13 @@ def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     if hay_casilla_vacia(t,pos_vecina):
         res = True
     return res
-"""
+
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 
 def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     raise Exception("No implementado")
-
+"""
 def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 
