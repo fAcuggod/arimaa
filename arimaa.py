@@ -64,7 +64,18 @@ def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
     return t[pos.fila][pos.columna] == VACIA
 
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
-    raise Exception("No implementado")
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert(not(hay_casilla_vacia(t, pos)))
+    es_figura:bool = False
+    es_color:bool = False
+    for f in LISTA_DE_TODAS_LAS_FIGURAS:
+#        print(t[pos.fila][pos.columna]) # Pieza(figura=CONEJO, color=DORADO)
+        if t[pos.fila][pos.columna].figura == f:
+            es_figura = True
+    for col in COLORES:
+        if t[pos.fila][pos.columna].color == col:
+            es_color = True
+    return es_color and es_figura
 
 #### Ejercicio 3
 
