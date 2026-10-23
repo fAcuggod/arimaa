@@ -89,9 +89,10 @@ LISTA_DE_LOS_COLORES = [DORADO, PLATEADO]
 
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    assert(not(hay_casilla_vacia(t, pos)))
     es_figura:bool = False
     es_color:bool = False
+    if hay_casilla_vacia(t, pos):
+        return False
     for f in LISTA_DE_TODAS_LAS_FIGURAS:
 #        print(t[pos.fila][pos.columna]) # Pieza(figura=CONEJO, color=DORADO)
         if t[pos.fila][pos.columna].figura == f:
@@ -117,8 +118,19 @@ def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
         res = True
     return res
 
+def hay_pieza_amiga_hacia(t: Tablero, pos: Posicion, d: Direccion) -> bool:
+    # (func. aux) decide si la pieza en dirección d respecto a la posición pos es amiga
+    col_pieza: Color = t[pos.fila][pos.columna].color
+    pos_amiga: Posicion = posicion_vecina_hacia(pos, d)
+    return hay_pieza_de_color(t, pos_amiga, col_pieza)
+
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert hay_pieza(t, pos)
+    for d in Direccion:
+        if hay_pieza_amiga_hacia(t, pos, d):
+            return True
+    return False
 
 def hay_pieza(t : Tablero, pos : Posicion) -> bool:
     # (func. aux) decide si existe una pieza en el tablero t posición pos
@@ -168,12 +180,51 @@ def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
     return False
 
 def hay_pieza_congelada(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    return hay_pieza(t, pos) and hay_pieza_enemiga_mas_fuerte_vecina(t, pos) and not hay_pieza_amiga_vecina(t, pos)
 
 #### Ejercicio 4
 
+def direccion_de_movimiento_habilitada(t: Tablero, pos: Posicion, d: Direccion) -> bool:
+    # (func. aux) decide si de haber pieza en la posición pos del tablero t, la figura de la pieza tiene habilitado moverse en la dirección d
+    assert hay_pieza(t, pos)
+    fig_pieza: Figura = t[pos.fila][pos.columna].figura
+    col_pieza: Color  = t[pos.fila][pos.columna].color
+    if fig_pieza == CONEJO and col_pieza == DORADO:
+        return d != SUR
+    elif fig_pieza == CONEJO and col_pieza == PLATEADO:
+        return d != NORTE
+    else:
+        return True
+
+def puede_mover_a_secas(t: Tablero, pos: Posicion, d: Direccion) -> bool:
+    # (func. aux) decide si dada la posición pos del tablero t existe casilla vacía en la dirección d
+    return hay_casilla_vacia_hacia(t, pos, d)
+
+def puede_arrastrar(t: Tablero, pos: Posicion, d: Direccion, d_arrastre: Direccion) -> bool:
+    # (func. aux) decide si se puede arrastrar la pieza ubicada en la dirección opuesta(d_arrastre) hacia la posición pos
+    return hay_casilla_vacia_hacia(t, pos, d) and hay_pieza_enemiga_mas_debil_hacia(t, pos, opuesta(d_arrastre))
+
+def puede_empujar(t: Tablero, pos: Posicion, d: Direccion, d_empuje: Direccion) -> bool:
+    # (func. aux) decide si se puede empujar la pieza ubicada en pos_enemiga hacia la dirección d_empuje
+    if not hay_pieza_enemiga_mas_debil_hacia(t, pos, d):
+        return False
+    pos_enemiga: Posicion = posicion_vecina_hacia(pos, d)
+    return hay_casilla_vacia_hacia(t, pos_enemiga, d_empuje)
+
+def puede_realizar_accion(t: Tablero, m: Movimiento) -> bool:
+    # (func. aux) decide si se puede realizar el movimiento m en el tablero t
+    if m.accion == MOVER_A_SECAS:
+        return puede_mover_a_secas(t, m.origen, m.pasos[0])
+    elif m.accion == ARRASTRAR:
+        return puede_arrastrar(t, m.origen, m.pasos[0], m.pasos[1])
+    else:
+        # única acción restante es PULL
+        return puede_empujar(t, m.origen, m.pasos[0], m.pasos[1])
+
 def puede_realizar_movimiento(j : Juego, m : Movimiento) -> bool:
-    raise Exception("No implementado")
+    assert(juego_bien_formado(j) and movimiento_bien_formado(m))
+    return hay_pieza_de_color(j.tablero, m.origen, j.turno) and not hay_pieza_congelada(j.tablero, m.origen) and direccion_de_movimiento_habilitada(j.tablero, m.origen, m.pasos[0]) and (j.pasos_consumidos + len(m.pasos) <= MAX_PASOS) and puede_realizar_accion(j.tablero, m)
 
 #### Ejercicio 5
 
