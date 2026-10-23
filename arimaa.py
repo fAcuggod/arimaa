@@ -228,8 +228,38 @@ def puede_realizar_movimiento(j : Juego, m : Movimiento) -> bool:
 
 #### Ejercicio 5
 
-def activar_trampas(t : Tablero) -> Tablero:
-    raise Exception("No implementado")
+def tableros_coinciden_en_la_posicion(t1: Tablero, t2: Tablero, pos: Posicion) -> bool:
+    # (func. aux) decide si la posición pos es la misma para t1 y t2
+    return t1[pos.fila][pos.columna] == t2[pos.fila][pos.columna]
+
+def tableros_coinciden_salvo_en_la_posicion(t1: Tablero, t2: Tablero, pos: Posicion):
+    # (func. aux) decide si dos tableros coinciden salvo en la posición pos
+    for pos_fila in range(ALTO):
+        for pos_columna in range(ANCHO):
+            pos_prima: Posicion = Posicion(pos_fila, pos_columna)
+            if pos_prima != pos and not tableros_coinciden_en_la_posicion(t1, t2, pos_prima):
+                return False
+    return True
+
+def es_tablero_sacando_pieza(t0: Tablero, t1: Tablero, pos: Posicion) -> bool:
+    # (func. aux) decide si t1 es tablero luego de sacar la pieza en la posición pos del tablero t0
+    return tableros_coinciden_salvo_en_la_posicion(t0, t1, pos) and hay_casilla_vacia(t1, pos)
+
+def es_tablero_despues_de_activar_trampa(t0: Tablero, t1: Tablero, postrampa: Posicion) -> bool:
+    # (func. aux) decide si el tablero t1 es tablero luego de activar trampa en la posición postrampa del tablero t0
+    if hay_pieza_amiga_vecina(t0, postrampa) and t1 != t0:
+        return False
+    elif hay_pieza_amiga_vecina(t0, postrampa):
+        return True
+    return es_tablero_sacando_pieza(t0, t1, postrampa)
+
+# (SIN TERMINAR)
+# def es_tablero_despues_de_activar_todas_las_trampas(t0: Tablero, t1: Tablero) -> bool:
+    # (func. aux)
+
+# def activar_trampas(t : Tablero) -> Tablero:
+    # assert tablero_bien_formado(t)
+
 
 #### Ejercicio 6
 
