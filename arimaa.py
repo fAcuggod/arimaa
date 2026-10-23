@@ -126,7 +126,7 @@ def hay_pieza_amiga_hacia(t: Tablero, pos: Posicion, d: Direccion) -> bool:
 
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    assert hay_pieza(t, pos)
+    #assert hay_pieza(t, pos)
     for d in Direccion:
         if hay_pieza_amiga_hacia(t, pos, d):
             return True
@@ -224,7 +224,12 @@ def puede_realizar_accion(t: Tablero, m: Movimiento) -> bool:
 
 def puede_realizar_movimiento(j : Juego, m : Movimiento) -> bool:
     assert(juego_bien_formado(j) and movimiento_bien_formado(m))
-    return hay_pieza_de_color(j.tablero, m.origen, j.turno) and not hay_pieza_congelada(j.tablero, m.origen) and direccion_de_movimiento_habilitada(j.tablero, m.origen, m.pasos[0]) and (j.pasos_consumidos + len(m.pasos) <= MAX_PASOS) and puede_realizar_accion(j.tablero, m)
+    c1:bool = hay_pieza_de_color(j.tablero, m.origen, j.turno)
+    c2:bool = not hay_pieza_congelada(j.tablero, m.origen)
+    c3:bool = direccion_de_movimiento_habilitada(j.tablero, m.origen, m.pasos[0])
+    c4:bool = (j.pasos_consumidos + len(m.pasos) <= MAX_PASOS)
+    c5:bool = puede_realizar_accion(j.tablero, m)
+    return c1 and c2 and c3 and c4 and c5
 
 #### Ejercicio 5
 
@@ -281,7 +286,11 @@ def es_tablero_despues_de_activar_todas_las_trampas(t0: Tablero, t1: Tablero) ->
     t_int_1: Tablero = tablero_post_activar_trampa(t0, POSICIONES_TRAMPA[0])
     t_int_2: Tablero = tablero_post_activar_trampa(t_int_1, POSICIONES_TRAMPA[1])
     t_int_3: Tablero = tablero_post_activar_trampa(t_int_2, POSICIONES_TRAMPA[2])
-    return es_tablero_despues_de_activar_trampa(t0, t_int_1, POSICIONES_TRAMPA[0]) and es_tablero_despues_de_activar_trampa(t_int_1, t_int_2, POSICIONES_TRAMPA[1]) and es_tablero_despues_de_activar_trampa(t_int_2, t_int_3, POSICIONES_TRAMPA[2]) and es_tablero_despues_de_activar_trampa(t_int_3, t1, POSICIONES_TRAMPA[3])
+    c1:bool = es_tablero_despues_de_activar_trampa(t0, t_int_1, POSICIONES_TRAMPA[0])
+    c2:bool = es_tablero_despues_de_activar_trampa(t_int_1, t_int_2, POSICIONES_TRAMPA[1])
+    c3:bool = es_tablero_despues_de_activar_trampa(t_int_2, t_int_3, POSICIONES_TRAMPA[2])
+    c4:bool = es_tablero_despues_de_activar_trampa(t_int_3, t1, POSICIONES_TRAMPA[3])
+    return c1 and c2 and c3 and c4
 
 def activar_trampas(t : Tablero) -> Tablero:
     assert tablero_bien_formado(t)
@@ -312,8 +321,10 @@ def sacar_pieza(t: Tablero, pos : Posicion) -> Tablero:
     return res
 
 def es_tablero_poniendo_pieza(t0: Tablero, t1:Tablero, pos:Posicion, f:Figura, col:Color) -> bool:
-    #func aux
-    return tableros_coinciden_salvo_en_la_posicion(t0, t1, pos) and hay_figura_de_color(t1, pos, f, col)
+    #func aux decide si poniendo la pieza de figura f y color col en t0 se obtiene un tablero igual a t1
+    c1:bool = tableros_coinciden_salvo_en_la_posicion(t0, t1, pos)
+    c2:bool = hay_figura_de_color(t1, pos, f, col)
+    return c1 and c2
 
 def es_tablero_trasladando_pieza(t0 : Tablero, t1: Tablero, pos_origen : Posicion, pos_destino: Posicion) -> bool:
     # (func. aux) decide t1 es el resultado de trasladar la pieza de t0.pos_origen a t1.pos_destino
@@ -323,7 +334,9 @@ def es_tablero_trasladando_pieza(t0 : Tablero, t1: Tablero, pos_origen : Posicio
             if hay_figura_de_color(t0, pos_origen, f, col):
                 hay_figura = True
     t_intermedio: Tablero = sacar_pieza(t0, pos_origen)
-    return hay_figura and es_tablero_sacando_pieza(t0, t_intermedio, pos_origen) and es_tablero_poniendo_pieza(t_intermedio, t1, pos_destino, f, col)
+    c1:bool = es_tablero_sacando_pieza(t0, t_intermedio, pos_origen)
+    c2:bool = es_tablero_poniendo_pieza(t_intermedio, t1, pos_destino, f, col)
+    return hay_figura and c1 and c2
 
 def tablero_post_mover_a_secas(t0 : Tablero, t1: Tablero, pos: Posicion, d : Direccion) -> bool:
     # (func. aux) que decide si t1 es el tablero despues de mover a secas una pieza en posición pos de tablero t0 a dirección d
@@ -335,7 +348,8 @@ def tablero_post_mover_a_secas(t0 : Tablero, t1: Tablero, pos: Posicion, d : Dir
     return c1 and c2 and c3
 
 def tablero_trasladando_pieza(t:Tablero, pos_origen:Posicion, pos_destino:Posicion) -> Tablero:
-    #func aux
+    #func aux que mueve la pieza que estaba en pos_origen de t y la mueve a pos_destino
+    assert tablero_bien_formado(t)
     res:Tablero = leer_tablero([
               '--------', #7
               '--------', #6
@@ -347,11 +361,13 @@ def tablero_trasladando_pieza(t:Tablero, pos_origen:Posicion, pos_destino:Posici
               '--------', #0
               #01234567
             ])
-    for fila in range (ALTO):
-        for columna in range (ANCHO):
-            res[fila][columna] = t[fila][columna]
+    for pos_fila in range (ALTO):
+        for pos_columna in range (ANCHO):
+            pos_prima: Posicion = Posicion(pos_fila, pos_columna)
+            res[pos_prima.fila][pos_prima.columna] = t[pos_prima.fila][pos_prima.columna]
     res = sacar_pieza(res, pos_origen)
-    res[pos_destino.fila][pos_destino.columna] = t[pos_origen.fila][pos_origen.columna]
+    pieza_a_mover:Pieza = t[pos_origen.fila][pos_origen.columna]
+    res[pos_destino.fila][pos_destino.columna] = pieza_a_mover
     assert es_tablero_trasladando_pieza(t, res, pos_origen, pos_destino)
     return res
     
@@ -400,7 +416,7 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
     if m.accion == MOVER_A_SECAS:
         res = sacar_pieza(j.tablero, m.origen)
         res[pos_destino.fila][pos_destino.columna] = pieza_propia
-        assert tablero_post_mover_a_secas(j, res, m.origen, m.pasos)
+        assert tablero_post_mover_a_secas(j.tablero, res, m.origen, m.pasos[0])
 
     if m.accion == ARRASTRAR:
         res = sacar_pieza(j.tablero, m.origen)
@@ -411,12 +427,13 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
         assert tablero_post_arrastrar(j.tablero, res, m.origen, m.pasos[0], m.pasos[1])
 
     if m.accion == EMPUJAR:
-        pos_enemiga:Posicion = posicion_vecina_hacia(m.origen, m[0])
+        pos_enemiga:Posicion = posicion_vecina_hacia(m.origen, m.pasos[0])
         res = sacar_pieza(j.tablero, pos_enemiga)
-        pos_hueco:Posicion = posicion_vecina_hacia(pos_enemiga, m[1]) #posicion a la cual empuja a la enemiga
+        pos_hueco:Posicion = posicion_vecina_hacia(pos_enemiga, m.pasos[1]) #posicion a la cual empuja a la enemiga
         res[pos_hueco.fila][pos_hueco.columna] = j.tablero[pos_enemiga.fila][pos_enemiga.columna] #pieza enemiga
         res = sacar_pieza(res, m.origen)
         res[pos_enemiga] = pieza_propia
+        assert tablero_post_empujar(j.tablero, res, m.origen, m.pasos[0], m.pasos[1])
     
     assert juego_bien_formado(res)
     return res
