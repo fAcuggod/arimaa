@@ -253,13 +253,42 @@ def es_tablero_despues_de_activar_trampa(t0: Tablero, t1: Tablero, postrampa: Po
         return True
     return es_tablero_sacando_pieza(t0, t1, postrampa)
 
-# (SIN TERMINAR)
-# def es_tablero_despues_de_activar_todas_las_trampas(t0: Tablero, t1: Tablero) -> bool:
-    # (func. aux)
+def tablero_post_activar_trampa(t: Tablero, postrampa: Posicion) -> Tablero:
+    # (func. aux) dado un tablero t, devuelve el tablero luego de activar la trampa
+    assert tablero_bien_formado(t)
+    res: Tablero = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+    for pos_fila in range(ALTO):
+        for pos_columna in range(ANCHO):
+            pos_prima: Posicion = Posicion(pos_fila, pos_columna)
+            if pos_prima == postrampa and hay_pieza(t, pos_prima) and not hay_pieza_amiga_vecina(t, pos_prima):
+                res[pos_prima.fila][pos_prima.columna] = VACIA
+            else:
+                res[pos_prima.fila][pos_prima.columna] = t[pos_prima.fila][pos_prima.columna]
+    return res
 
-# def activar_trampas(t : Tablero) -> Tablero:
-    # assert tablero_bien_formado(t)
+def es_tablero_despues_de_activar_todas_las_trampas(t0: Tablero, t1: Tablero) -> bool:
+    # (func. aux) decide si t1 es tablero luego de que se activen las trampas en el tablero t0
+    t_int_1: Tablero = tablero_post_activar_trampa(t0, POSICIONES_TRAMPA[0])
+    t_int_2: Tablero = tablero_post_activar_trampa(t_int_1, POSICIONES_TRAMPA[1])
+    t_int_3: Tablero = tablero_post_activar_trampa(t_int_2, POSICIONES_TRAMPA[2])
+    return es_tablero_despues_de_activar_trampa(t0, t_int_1, POSICIONES_TRAMPA[0]) and es_tablero_despues_de_activar_trampa(t_int_1, t_int_2, POSICIONES_TRAMPA[1]) and es_tablero_despues_de_activar_trampa(t_int_2, t_int_3, POSICIONES_TRAMPA[2]) and es_tablero_despues_de_activar_trampa(t_int_3, t1, POSICIONES_TRAMPA[3])
 
+def activar_trampas(t : Tablero) -> Tablero:
+    assert tablero_bien_formado(t)
+    res: Tablero = t
+    for trampa in POSICIONES_TRAMPA:
+        res = tablero_post_activar_trampa(res, trampa)
+    return res
 
 #### Ejercicio 6
 

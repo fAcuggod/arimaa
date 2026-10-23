@@ -24,6 +24,19 @@ def tablero_8x8_vacio():
               '--------', #0
               #01234567
             ])
+    
+def tablero_8x8_trampas():
+    return leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--X--X--', #5
+              '--------', #4
+              '--------', #3
+              '--X--X--', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])    
 
 def tablero_8x8_inicial_ejemplo():
     return leer_tablero([
@@ -562,6 +575,415 @@ class test_puede_realizar_movimiento(unittest.TestCase):
                   #01234567
                 ])
         self.assertFalse(puede_realizar_movimiento(Juego(t, DORADO, 3), Movimiento(MOVER_A_SECAS, Posicion(3, 3), [NORTE])))
+
+# EJERCICIO 5
+
+class tes_tableros_coinciden_en_la_posicion(unittest.TestCase): # (test func. aux)
+
+    def test_tableros_coinciden_en_la_posicion_ok(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---h----', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---h----', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(tableros_coinciden_en_la_posicion(t1, t2, Posicion(4, 3)))
+    def test_tableros_no_coinciden_en_la_posicion(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---h----', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---r----', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertFalse(tableros_coinciden_en_la_posicion(t1, t2, Posicion(4, 3)))
+
+class test_tableros_coinciden_salvo_en_la_posicion(unittest.TestCase): # (test func. aux)
+    
+    def test_tableros_coinciden_salvo_en_la_posicion_ok(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---rH---', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---rC---', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(tableros_coinciden_salvo_en_la_posicion(t1, t2, Posicion(4, 4)))
+    def test_tableros_coinciden(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---rC---', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---rC---', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(tableros_coinciden_salvo_en_la_posicion(t1, t2, Posicion(4, 4)))
+    def test_tableros_no_coinciden_salvo_en_la_posicion(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '-----c--', #6
+              '--------', #5
+              '---r----', #4
+              '------H-', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '-r---d--', #6
+              '--------', #5
+              '---C----', #4
+              '--------', #3
+              '--------', #2
+              '---M----', #1
+              '------c-', #0
+              #01234567
+            ])
+        self.assertFalse(tableros_coinciden_salvo_en_la_posicion(t1, t2, Posicion(4, 3)))
+
+class test_es_tablero_sacando_pieza(unittest.TestCase): # (test func. aux)
+
+    def test_es_tablero_sacando_pieza_ok(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---H----', #4
+              '---C----', #3
+              '--r-----', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '---H----', #4
+              '---C----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(es_tablero_sacando_pieza(t1, t2, Posicion(2, 2)))
+    def test_no_es_tablero_sacando_pieza(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--r-----', #6
+              '--------', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--r-----', #6
+              '--------', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertFalse(es_tablero_sacando_pieza(t1, t2, Posicion(6, 2)))
+        
+class test_es_tablero_despues_de_activar_trampa(unittest.TestCase): # (test func. aux)
+
+    def test_es_tablero_despues_de_activar_trampa_ok(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--r-----', #6
+              '--------', #5
+              '--------', #4
+              '---H----', #3
+              '--r-----', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--r-----', #6
+              '--------', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(es_tablero_despues_de_activar_trampa(t1, t2, Posicion(2, 2)))
+    def test_no_es_tablero_despues_de_activar_trampa(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--M-----', #6
+              '--c-----', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--M-----', #6
+              '--c-----', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertFalse(es_tablero_despues_de_activar_trampa(t1, t2, Posicion(5, 2)))
+    def test_es_tablero_despues_de_activar_trampa_pieza_liberada(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--d-----', #6
+              '--r-----', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--d-----', #6
+              '---r----', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertFalse(es_tablero_despues_de_activar_trampa(t1, t2, Posicion(5, 2)))
+    def test_es_tablero_despues_de_activar_trampa_tableros_iguales(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--d-----', #6
+              '--r-----', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--d-----', #6
+              '--r-----', #5
+              '--------', #4
+              '---H----', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(es_tablero_despues_de_activar_trampa(t1, t2, Posicion(5, 2)))
+
+class test_tablero_post_activar_trampa(unittest.TestCase): # (test func. aux)
+
+    def test_tablero_post_activar_trampa_ok(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--d-----', #6
+              '--r-----', #5
+              '--------', #4
+              '--------', #3
+              '--rC----', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--d-----', #6
+              '--r-----', #5
+              '--------', #4
+              '--------', #3
+              '---C----', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertEqual(tablero_post_activar_trampa(t1, Posicion(2, 2)), t2)
+    def test_tablero_post_activar_trampa_amigo_vecino(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--E-----', #6
+              '-----ch-', #5
+              '--------', #4
+              '--------', #3
+              '---C----', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--E-----', #6
+              '-----ch-', #5
+              '--------', #4
+              '--------', #3
+              '---C----', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertEqual(tablero_post_activar_trampa(t1, Posicion(5, 5)), t2)
+
+class test_es_tablero_despues_de_activar_todas_las_trampas(unittest.TestCase): # (test func. aux)
+
+    def test_es_tablero_despues_de_activar_todas_las_trampas_ok(self):
+        t1 = leer_tablero([
+              '--------', #7
+              '--E-----', #6
+              '--r--ch-', #5
+              '--------', #4
+              '--------', #3
+              '--Re-r--', #2
+              '-----H--', #1
+              '--------', #0
+              #01234567
+            ])
+        t2 = leer_tablero([
+              '--------', #7
+              '--E-----', #6
+              '-----ch-', #5
+              '--------', #4
+              '--------', #3
+              '---e----', #2
+              '-----H--', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertTrue(es_tablero_despues_de_activar_todas_las_trampas(t1, t2))
+
+class test_activar_trampas(unittest.TestCase):
+
+    def test_activar_trampas_ok(self):
+        t0 = leer_tablero([
+                   '-eRD--rd', #7
+                   '--------', #6
+                   'H-r--E--', #5
+                   '-H--r-Cr', #4
+                   'R-------', #3
+                   'R-H--m--', #2
+                   'R-------', #1
+                   'c-D---R-', #0
+                   #01234567
+                 ])
+        t1 = leer_tablero([
+                   '-eRD--rd', #7
+                   '--------', #6
+                   'H-------', #5
+                   '-H--r-Cr', #4
+                   'R-------', #3
+                   'R-------', #2
+                   'R-------', #1
+                   'c-D---R-', #0
+                   #01234567
+                 ])
+        t2 = activar_trampas(t0)
+        self.assertNotEqual(t0, t1)
+        self.assertEqual(t2, t1)
+    def test_activar_trampas_ok2(self):
+        t = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '-Cr--ch-', #5
+              '--------', #4
+              '--------', #3
+              '--Ce-d--', #2
+              '-----H--', #1
+              '--------', #0
+              #01234567
+            ])
+        t1 = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '-C---ch-', #5
+              '--------', #4
+              '--------', #3
+              '---e----', #2
+              '-----H--', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertEqual(activar_trampas(t), t1)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
