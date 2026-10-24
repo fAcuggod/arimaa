@@ -366,8 +366,6 @@ class test_hay_pieza_enemiga_mas_fuerte_vecina(unittest.TestCase):
             ])
         self.assertFalse(hay_pieza_enemiga_mas_fuerte_vecina(t, Posicion(6, 5)))
 
-"""
-
 class test_hay_pieza_congelada(unittest.TestCase):
 
     def test_hay_pieza_congelada(self):
@@ -383,7 +381,22 @@ class test_hay_pieza_congelada(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(hay_pieza_congelada(t, Posicion(6, 1)))
+    def test_no_pieza_congelada(self):
+        t = leer_tablero([
+              '--d--H-D', #7
+              '-hMc--r-', #6
+              '--r--C-H', #5
+              '--------', #4
+              '-CeD----', #3
+              '---R----', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertFalse(hay_pieza_congelada(t, Posicion(2, 3)))
 
+
+"""
 #### Ejercicio 4
 
 class test_puede_realizar_movimiento(unittest.TestCase):

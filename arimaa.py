@@ -258,11 +258,10 @@ def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
         Returns:
             True si en alguna casilla vecina a pos hay una pieza de su mismo color.
     """
-    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    assert(hay_pieza(t, pos))
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos) and hay_pieza(t, pos))
     res: bool = False
     for d in Direccion:
-        if(casilla_en_posicion(t, posicion_vecina_hacia(pos, d)).color == casilla_en_posicion(t, pos).color):
+        if(hay_pieza(t, posicion_vecina_hacia(pos, d)) and casilla_en_posicion(t, posicion_vecina_hacia(pos, d)).color == casilla_en_posicion(t, pos).color):
             res = True
     return res
     
@@ -286,15 +285,13 @@ def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion
             del color opuesto a la de 'pos', y su valor de fuerza es menor a la misma.
 
     """
-    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    assert(hay_pieza(t, pos))
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos) and hay_pieza(t, pos))
     res: bool = False
     posicionVecina : Posicion = posicion_vecina_hacia(pos, d)
     piezaNuestra : Casilla = casilla_en_posicion(t, pos)
     casillaEnemiga : Casilla = casilla_en_posicion(t, posicionVecina)
-    if(hay_pieza(t, posicionVecina)):
-        if(es_enemigo(t, pos, posicionVecina)):      
-            res = fuerza(piezaNuestra.figura) > fuerza(casillaEnemiga.figura)
+    if(hay_pieza(t, posicionVecina) and es_enemigo(t, pos, posicionVecina)):
+        res = fuerza(piezaNuestra.figura) > fuerza(casillaEnemiga.figura)
     return res
 
 def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
@@ -313,24 +310,38 @@ def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
         Returns:
             True si en alguna casilla vecina hay una figura del color opuesto
             a la de 'pos', y su valor de fuerza es mayor a la misma.
-
     """
-    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    assert(hay_pieza(t, pos))
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos) and hay_pieza(t, pos))
     res: bool = False
     piezaNuestra : Casilla = casilla_en_posicion(t, pos)
     for d in Direccion:
         posicionVecina : Posicion = posicion_vecina_hacia(pos, d)
         casillaEnemiga : Casilla = casilla_en_posicion(t, posicionVecina)
-        if(hay_pieza(t, posicionVecina)):
-            if(es_enemigo(t, pos, posicionVecina)):      
-                res = fuerza(piezaNuestra.figura) < fuerza(casillaEnemiga.figura)
+        if(hay_pieza(t, posicionVecina) and es_enemigo(t, pos, posicionVecina)):
+            res = fuerza(piezaNuestra.figura) < fuerza(casillaEnemiga.figura)
     return res
 
-"""
 def hay_pieza_congelada(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    """
+        Dado un Tablero 't' y una Posicion 'pos',
+        nos dira si en alguna direccion tenemos una ficha del color opuesto
+        cuyo valor de fuerza es mayor al de la figura en 'pos'
 
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+
+        Args:
+            t    (Tablero): El tablero de juego que se analizara
+            pos (Posicion): La posicion de la pieza.
+
+        Returns:
+            True si hay una pieza en la posicion dada del tablero, 
+                    cerca suyo hay una pieza enemiga mas fuerte
+                    y no hay una pieza aliada cerca.
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    return (hay_pieza(t,pos) and hay_pieza_enemiga_mas_fuerte_vecina(t, pos) and not hay_pieza_amiga_vecina(t, pos))
+
+"""
 #### Ejercicio 4
 
 def puede_realizar_movimiento(j : Juego, m : Movimiento) -> bool:
