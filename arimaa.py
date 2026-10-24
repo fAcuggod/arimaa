@@ -154,7 +154,7 @@ def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
 
         Args:
             t (Tablero): El tablero de juego que se analizara
-            p (Posicion): La posicion cuya casilla observaremos.
+            pos (Posicion): La posicion cuya casilla observaremos.
 
         Returns:
             True si la casilla es Vacia.
@@ -162,12 +162,27 @@ def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
     return t[pos.fila][pos.columna] == VACIA
 
-"""
+
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
-    raise Exception("No implementado")
+    """
+        Dado un Tablero 't', una Posicion 'pos' y un color 'col',
+        nos dira si en el casillo correspondiente hay una pieza del color dado.
+
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+
+        Args:
+            t (Tablero): El tablero de juego que se analizara
+            pos (Posicion): La posicion cuya casilla observaremos.
+            col (Color): El color con el que compararemos.
+
+        Returns:
+            True si la casilla contiene una Pieza cuyo color = col
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    return t[pos.fila][pos.columna].color == col
 
 #### Ejercicio 3
-
+"""
 def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     raise Exception("No implementado")
 

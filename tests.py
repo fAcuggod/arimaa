@@ -186,15 +186,19 @@ class test_hay_casilla_vacia(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertFalse(hay_casilla_vacia(t, Posicion(7,4)))
 
-"""
+
 class test_hay_pieza_de_color(unittest.TestCase):
 
     def test_hay_pieza_de_color_ok(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_pieza_de_color(t, Posicion(1, 4), DORADO))
 
-#### Ejercicio 3
+    def test_hay_pieza_de_color_no(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_pieza_de_color(t, Posicion(1, 4), PLATEADO))
 
+#### Ejercicio 3
+"""
 class test_hay_casilla_vacia_hacia(unittest.TestCase):
 
     def test_hay_casilla_vacia_hacia(self):
