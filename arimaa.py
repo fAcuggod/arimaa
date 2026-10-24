@@ -58,12 +58,32 @@ def posicion_en_tablero(pos : Posicion) -> bool:
             True si el valor de fila esta entre 0 (inclusive) y el ALTO,
                y si el valor de columna esta entre 0 (inclusive) y el ANCHO.
     """
-    return (0 <= pos.fila) and (pos.fila < ALTO) and (0 <= pos.columna) and (pos.columna < ANCHO)
+    return ((0 <= pos.fila) and (pos.fila < ALTO)) and ((0 <= pos.columna) and (pos.columna < ANCHO))
+
+
+def movimiento_bien_formado(m : Movimiento) -> bool:
+    """
+        Indica si el movimiento "m" esta bien formado.
+
+        PRE: True
+
+        Args:
+            m (Movimiento): El movimiento que se validara segun sus valores de origen, accion y pasos.
+
+        Returns:
+            True si la posicion de origen esta en el tablero
+               y si su accion es mover a secas y contiene un elemento de paso
+               y si su accion es arrastrar O empujar y contiene dos elementos de pasos.
+    """
+    res: bool = False
+    if (posicion_en_tablero(m.origen)):
+        if(m.accion == MOVER_A_SECAS and len(m.pasos) == 1):
+            res = True
+        elif((m.accion == ARRASTRAR or m.accion == EMPUJAR) and len(m.pasos) == 2):
+            res = True
+    return res
 
 """
-def movimiento_bien_formado(m : Movimiento) -> bool:
-    raise Exception("No implementado")
-
 def juego_bien_formado(j : Juego) -> bool:
     raise Exception("No implementado")
 
