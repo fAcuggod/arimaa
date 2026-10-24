@@ -145,10 +145,24 @@ def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
     assert(tablero_bien_formado(t) and posicion_en_tablero(p))
     return t[p.fila][p.columna]
 
-"""
 def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    """
+        Dado un tablero 't' y una posicion 'pos', nos dira si
+        esta casilla esta vacia.
 
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+
+        Args:
+            t (Tablero): El tablero de juego que se analizara
+            p (Posicion): La posicion cuya casilla observaremos.
+
+        Returns:
+            True si la casilla es Vacia.
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    return t[pos.fila][pos.columna] == VACIA
+
+"""
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
     raise Exception("No implementado")
 

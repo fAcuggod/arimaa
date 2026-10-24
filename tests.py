@@ -173,13 +173,20 @@ class test_casilla_en_posicion(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertNotEqual(casilla_en_posicion(t, Posicion(0,0)), Pieza(CABALLO, PLATEADO))
 
-"""
+
 class test_hay_casilla_vacia(unittest.TestCase):
 
     def test_casilla_vacia(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_casilla_vacia(t, Posicion(2, 1)))
+    def test_casilla_figura(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia(t, Posicion(0, 4)))
+    def test_todo_vacio(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia(t, Posicion(7,4)))
 
+"""
 class test_hay_pieza_de_color(unittest.TestCase):
 
     def test_hay_pieza_de_color_ok(self):
