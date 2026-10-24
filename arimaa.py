@@ -38,6 +38,31 @@ def hay_pieza(t: Tablero, pos: Posicion) -> bool:
     """
     return t[pos.fila][pos.columna] != VACIA
 
+def es_enemigo(t: Tablero, pos: Posicion, posEnemiga: Posicion) -> bool:
+    """
+        Dado un tablero 't' y posiciones 'pos' y 'posEnemiga'
+        nos dira si son de colores opuestos.
+
+        PRE: Que haya una pieza en la posicion 'pos'
+               y haya una pieza en la posicion 'posEnemiga'
+
+        Args:
+            t           (Tablero): el tablero donde estaran ambas posiciones
+            pos        (Posicion): la primer posicion a comparar
+            posEnemiga (Posicion): la segunda posicion a comparar
+
+        Returns:
+            True si la Figura en la posicion 'pos' es de color Dorado y la de 'posEnemiga' es Plateado
+               o si la Figura en la posicion 'pos' es de color plateado y la de 'posEnemiga' es Dorado
+    """
+    assert(hay_pieza(t, pos))
+    assert(hay_pieza(t, posEnemiga))
+    if(casilla_en_posicion(t, pos).color == DORADO):
+        res = casilla_en_posicion(t, posEnemiga).color == PLATEADO
+    else:
+        res = casilla_en_posicion(t, posEnemiga).color == DORADO
+    return res
+
 #### Ejercicio 1
 
 def tablero_bien_formado(t : Tablero) -> bool:
@@ -241,10 +266,38 @@ def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
             res = True
     return res
     
-"""
-def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
-    raise Exception("No implementado")
 
+def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
+    """
+        Dado un Tablero 't', una Posicion 'pos' y una Direccion 'd',
+        nos dira si en la direccion dada tenemos una ficha del color opuesto
+        cuyo valor de fuerza es menor al de la figura en 'pos'
+
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+             y que haya una pieza en dicha posicion en el tablero dado.
+
+        Args:
+            t    (Tablero): El tablero de juego que se analizara
+            pos (Posicion): La posicion cuya posible enemiga analizaremos.
+            d  (Direccion): La direccion en la cual buscaremos enemigos.
+
+        Returns:
+            True si la casilla vecina en la direccion 'd' contiene una figura
+            del color opuesto a la de 'pos', y su valor de fuerza es menor a la misma.
+
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert(hay_pieza(t, pos))
+    res: bool = False
+    posicionVecina : Posicion = posicion_vecina_hacia(pos, d)
+    piezaNuestra : Casilla = casilla_en_posicion(t, pos)
+    casillaEnemiga : Casilla = casilla_en_posicion(t, posicionVecina)
+    if(hay_pieza(t, posicionVecina)):
+        if(es_enemigo(t, pos, posicionVecina)):      
+            res = fuerza(piezaNuestra.figura) > fuerza(casillaEnemiga.figura)
+    return res
+
+"""
 def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 

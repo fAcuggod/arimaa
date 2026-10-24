@@ -69,7 +69,28 @@ class test_hay_pieza(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertFalse(hay_pieza(t, Posicion(4,4)))
 
+class test_es_enemigo(unittest.TestCase):
 
+    def test_es_enemigo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(es_enemigo(t, Posicion(0,0), Posicion(7,7)))
+
+    def test_es_aliado(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(es_enemigo(t, Posicion(0,0), Posicion(0,1)))
+
+    def test_es_enemigo_reves(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertTrue(es_enemigo(t, Posicion(7,7), Posicion(0,0)))
+
+    def test_es_aliado_reves(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(es_enemigo(t, Posicion(7,7), Posicion(7,6)))
+
+    def test_es_mismo(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(es_enemigo(t, Posicion(0,0), Posicion(0,0)))
+        
 #### Ejercicio 1
 
 class test_tablero_bien_formado(unittest.TestCase):
@@ -258,7 +279,6 @@ class test_hay_pieza_amiga_vecina(unittest.TestCase):
             ])
         self.assertFalse(hay_pieza_amiga_vecina(t, Posicion(4, 3)))
 
-"""
 class test_hay_pieza_enemiga_mas_debil_hacia(unittest.TestCase):
 
     def test_hay_pieza_enemiga_mas_debil_hacia(self):
@@ -274,7 +294,35 @@ class test_hay_pieza_enemiga_mas_debil_hacia(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), OESTE))
+    def test_no_hay_pieza(self):
+        t = leer_tablero([
+              '--Hdm---', #7
+              'r--HhC--', #6
+              'e---R-C-', #5
+              'ME--d---', #4
+              'h--RDcRr', #3
+              'R-R-r--r', #2
+              '-RMcrRD-', #1
+              '--r---rr', #0
+              #01234567
+            ])
+        self.assertFalse(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), NORTE))
+    def test_pieza_vecina_es_amiga(self):
+        t = leer_tablero([
+              '--Hdm---', #7
+              'r--HhC--', #6
+              'e---R-C-', #5
+              'ME--d---', #4
+              'h--RDcRr', #3
+              'R-R-r--r', #2
+              '-RMcrRD-', #1
+              '--r---rr', #0
+              #01234567
+            ])
+        self.assertFalse(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), ESTE))
 
+
+"""
 class test_hay_pieza_enemiga_mas_fuerte_vecina(unittest.TestCase):
 
     def test_hay_pieza_enemiga_mas_fuerte_vecina(self):
