@@ -160,7 +160,7 @@ def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
             True si la casilla es Vacia.
     """
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    return t[pos.fila][pos.columna] == VACIA
+    return casilla_en_posicion(t, pos) == VACIA
 
 
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
@@ -179,13 +179,29 @@ def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
             True si la casilla contiene una Pieza cuyo color = col
     """
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    return t[pos.fila][pos.columna].color == col
+    return casilla_en_posicion(t, pos).color == col
 
 #### Ejercicio 3
-"""
-def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
-    raise Exception("No implementado")
 
+def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
+    """
+        Dado un Tablero 't', una Posicion 'pos' y una Direccion 'd',
+        nos dira si en la direccion dada tenemos una casilla vacia.
+
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+
+        Args:
+            t (Tablero): El tablero de juego que se analizara
+            pos (Posicion): La posicion cuya vecina analizaremos.
+            d (Direccion): La direccion donde buscaremos una casilla vecina vacia.
+
+        Returns:
+            True si la casilla vecina a pos en la direccion 'd' esta vacia.
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    return hay_casilla_vacia(t, posicion_vecina_hacia(pos, d))
+
+"""
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 

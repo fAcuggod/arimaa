@@ -198,7 +198,7 @@ class test_hay_pieza_de_color(unittest.TestCase):
         self.assertFalse(hay_pieza_de_color(t, Posicion(1, 4), PLATEADO))
 
 #### Ejercicio 3
-"""
+
 class test_hay_casilla_vacia_hacia(unittest.TestCase):
 
     def test_hay_casilla_vacia_hacia(self):
@@ -215,6 +215,11 @@ class test_hay_casilla_vacia_hacia(unittest.TestCase):
             ])
         self.assertTrue(hay_casilla_vacia_hacia(t, Posicion(0, 0), NORTE))
 
+    def test_no_hay_casilla_vacia_hacia(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertFalse(hay_casilla_vacia_hacia(t, Posicion(0,0), ESTE))
+
+"""
 class test_hay_pieza_amiga_vecina(unittest.TestCase):
 
     def test_hay_pieza_amiga_vecina(self):
