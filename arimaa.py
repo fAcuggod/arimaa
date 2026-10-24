@@ -83,12 +83,28 @@ def movimiento_bien_formado(m : Movimiento) -> bool:
             res = True
     return res
 
-"""
+
 def juego_bien_formado(j : Juego) -> bool:
-    raise Exception("No implementado")
+    """
+        Indica si el juego "j" esta bien formado.
 
+        PRE: True
+
+        Args:
+            j (Juego): El juego que se validara segun su tablero y pasos consumidos.
+
+        Returns:
+            True si el tablero esta bien formado
+               y si los pasos consumidos estan entre 0 (inclusive) y Max_Pasos
+    """
+    res: bool = False
+    if(tablero_bien_formado(j.tablero)):
+        if((0 <= j.pasos_consumidos) and (j.pasos_consumidos < MAX_PASOS)):
+            res = True
+    return res
+
+"""
 #### Ejercicio 2
-
 def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
     raise Exception("No implementado")
 

@@ -107,15 +107,35 @@ class test_movimiento_bien_formado(unittest.TestCase):
     def test_no_es_pos_origen(self):
         self.assertFalse(movimiento_bien_formado(Movimiento(MOVER_A_SECAS, Posicion(10, 0), [SUR])))
 
-"""
+
 class test_juego_bien_formado(unittest.TestCase):
 
     def test_juego_ok(self):
         j = Juego(tablero_8x8_vacio(), DORADO, 0)
         self.assertTrue(juego_bien_formado(j))
 
-#### Ejercicio 2
+    def test_juego_mal(self):
+        j = Juego(tablero_3x2(), DORADO, 0)
+        self.assertFalse(juego_bien_formado(j))
 
+    def test_juego_horrendo(self):
+        j = Juego(tablero_3x2(), DORADO, 5)
+        self.assertFalse(juego_bien_formado(j))
+
+    def test_juego_ok_plateado(self):
+        j = Juego(tablero_8x8_vacio(), PLATEADO, 0)
+        self.assertTrue(juego_bien_formado(j))
+
+    def test_juego_mal_plateado(self):
+        j = Juego(tablero_8x8_vacio(), PLATEADO, 4)
+        self.assertFalse(juego_bien_formado(j))
+
+    def test_juego_empezado(self):
+        j = Juego(tablero_8x8_vacio(), DORADO, 3)
+        self.assertTrue(juego_bien_formado(j))
+
+#### Ejercicio 2
+"""
 class test_posicion_vecina_hacia(unittest.TestCase):
 
     def test_vecina_al_norte(self):
