@@ -1,0 +1,4 @@
+# para limpiar un toque el repo, vamos a hacer que no se commiteen archivos innecesarios
+/__pycache__
+.coverage
+coverage.json

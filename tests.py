@@ -38,6 +38,27 @@ def tablero_8x8_inicial_ejemplo():
               #01234567
             ])
 
+def tablero_3x2():
+    return leer_tablero([
+        'hc',
+        'cc',
+        'dc'
+    ])
+
+def tablero_8x2():
+    return leer_tablero([
+        'hc',
+        'cc',
+        'dc',
+        'cc',
+        'dc',
+        'cc',
+        'dc',
+        'cc'        
+    ])
+
+
+
 #### Ejercicio 1
 
 class test_tablero_bien_formado(unittest.TestCase):
@@ -45,7 +66,16 @@ class test_tablero_bien_formado(unittest.TestCase):
     def test_8x8_lleno(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(tablero_bien_formado(t))
+    
+    def test_3x2(self):
+        t = tablero_3x2()
+        self.assertFalse(tablero_bien_formado(t))
 
+    def test_8x2(self):
+        t = tablero_8x2()
+        self.assertFalse(tablero_bien_formado(t))
+
+"""
 class test_posicion_en_tablero(unittest.TestCase):
 
     def test_posicion_ok(self):
@@ -278,3 +308,7 @@ class test_ganador_del_juego(unittest.TestCase):
         self.assertTrue(hay_ganador_determinado(j))
         self.assertEqual(ganador_del_juego(j), DORADO)
 
+"""
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

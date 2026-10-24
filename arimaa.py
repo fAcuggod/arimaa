@@ -1,7 +1,7 @@
 from definiciones import *
 
 #### Algunas funciones ya dadas
-
+"""
 def son_posiciones_vecinas(pos1 : Posicion, pos2 : Posicion) -> bool: # pragma: no cover
     return (pos1.fila == pos2.fila and abs(pos1.columna - pos2.columna) == 1) \
         or (pos1.columna == pos2.columna and abs(pos1.fila - pos2.fila) == 1)
@@ -19,12 +19,33 @@ def direccion_desde_hasta(pos1 : Posicion, pos2 : Posicion) -> Direccion: # prag
 
 def pasar_turno(j : Juego) -> Juego: # pragma: no cover
     return Juego(j.tablero, oponente(j.turno), 0)
+"""
+#### Espacio para Funciones Auxiliares y Constantes propias.
 
 #### Ejercicio 1
 
 def tablero_bien_formado(t : Tablero) -> bool:
-    raise Exception("No implementado")
+    """
+        Indica si el tablero *t* esta bien formado.
 
+        PRE: True
+
+        Args:
+            t (Tablero): El tablero de juego para el cual se
+                         indica si esta bien formado.
+        
+        Returns:
+            True si la longitud de t (Su cantidad de filas) coincide con la altura ALTO,
+            y despues revisa si la longitud de estas filas coincide con el largo ANCHO.
+    """
+    res: bool = False
+    if (len(t) == ALTO)
+        for fila in t:
+            if (len(fila) != ANCHO):
+                return res
+            res = True
+    return res
+"""
 def posicion_en_tablero(pos : Posicion) -> bool:
     raise Exception("No implementado")
 
@@ -88,3 +109,4 @@ def hay_ganador_determinado(j : Juego) -> bool:
 def ganador_del_juego(j : Juego) -> Color:
     raise Exception("No implementado")
 
+"""

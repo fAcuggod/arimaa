@@ -55,6 +55,7 @@
       R/r : conejo
 
 Por ejemplo:
+
 rrrrrrrr
 ccddhhme
 --------
