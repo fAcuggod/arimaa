@@ -21,6 +21,23 @@ def pasar_turno(j : Juego) -> Juego: # pragma: no cover
 
 #### Espacio para Funciones Auxiliares y Constantes propias.
 
+def hay_pieza(t: Tablero, pos: Posicion) -> bool:
+    """
+        Dado un tablero 't' y una posicion 'pos',
+        nos dira si hay una pieza en la posicion dada.
+
+        PRE: True
+
+        Args:
+            t (Tablero): el tablero donde esta la posicion
+            pos (Posicion): la posicion que estamos analizando.
+
+        Returns:
+            True si la casilla correspondiente a la posicion 'pos'
+                 tiene un valor diferente de VACIA.
+    """
+    return t[pos.fila][pos.columna] != VACIA
+
 #### Ejercicio 1
 
 def tablero_bien_formado(t : Tablero) -> bool:
@@ -201,10 +218,30 @@ def hay_casilla_vacia_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
     return hay_casilla_vacia(t, posicion_vecina_hacia(pos, d))
 
-"""
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    """
+        Dado un Tablero 't' y una Posicion 'pos',
+        nos dira si en la direccion dada tenemos una casilla vacia.
 
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+             y que haya una pieza en dicha posicion en el tablero dado.
+
+        Args:
+            t (Tablero): El tablero de juego que se analizara
+            pos (Posicion): La posicion cuya vecina analizaremos.
+
+        Returns:
+            True si en alguna casilla vecina a pos hay una pieza de su mismo color.
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert(hay_pieza(t, pos))
+    res: bool = False
+    for d in Direccion:
+        if(casilla_en_posicion(t, posicion_vecina_hacia(pos, d)).color == casilla_en_posicion(t, pos).color):
+            res = True
+    return res
+    
+"""
 def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     raise Exception("No implementado")
 
