@@ -1268,9 +1268,33 @@ class test_es_tablero_trasladando_pieza(unittest.TestCase):
             ])
         
         self.assertTrue(es_tablero_trasladando_pieza(t0, t1, Posicion(6,2),Posicion(7,2)))
+    def test_muevo_un_caballo(self):
+        t0:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '----H---', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '-----H--', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertTrue(es_tablero_trasladando_pieza(t0, t1, Posicion(3,4), Posicion(3,5)))
 
 class test_tablero_post_mover_a_secas(unittest.TestCase):
-    def test_muevo_un_conejo(self):
+    def test_muevo_un_conejo_plateado(self):
         t0:Tablero = tablero_8x8_inicial_ejemplo()
         t1:Tablero = leer_tablero([
               'hcdmedch', #7
@@ -1284,6 +1308,20 @@ class test_tablero_post_mover_a_secas(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(6,7), SUR))
+    def test_muevo_un_conejo_dorado(self):
+        t0:Tablero = tablero_8x8_inicial_ejemplo()
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrrrr', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '---R----', #2
+              'RRR-RRRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(2,3), NORTE))
 
 class test_tablero_trasladando_pieza(unittest.TestCase):
     def test_muevo_un_conejo(self):
@@ -1300,6 +1338,30 @@ class test_tablero_trasladando_pieza(unittest.TestCase):
               #01234567
             ])
         self.assertEqual(tablero_trasladando_pieza(t0, Posicion(6,6), Posicion(5,6)),t1)
+    def test_muevo_un_caballo(self):
+        t0:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '----H---', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '-----H--', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertEqual(tablero_trasladando_pieza(t0, Posicion(3,4), Posicion(3,5)),t1)
     def test_no_muevo_un_conejo(self):
         t0:Tablero = tablero_8x8_inicial_ejemplo()
         t1:Tablero = leer_tablero([
