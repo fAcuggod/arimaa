@@ -147,11 +147,12 @@ class test_posicion_vecina_hacia(unittest.TestCase):
     def test_vecina_al_oeste(self):
         self.assertEqual(posicion_vecina_hacia(Posicion(0,1), OESTE), Posicion(0,0))
 
-"""
+
 class test_son_posiciones_vecinas(unittest.TestCase):
 
     def test_vecinas(self):
         self.assertTrue(son_posiciones_vecinas(Posicion(0, 0), Posicion(1, 0)))
+
 
 class test_casilla_en_posicion(unittest.TestCase):
 
@@ -159,6 +160,20 @@ class test_casilla_en_posicion(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertEqual(casilla_en_posicion(t, Posicion(0, 0)), Pieza(CABALLO, DORADO))
 
+    def test_casilla_fuerapos(self):
+        t = tablero_8x8_vacio()
+        self.assertNotEqual(casilla_en_posicion(t, Posicion(0, 0)), Pieza(CABALLO, DORADO))
+
+    def test_casilla_mal(self):
+        t = tablero_3x2()
+        with self.assertRaises(AssertionError):
+            casilla_en_posicion(t, Posicion(0, 0)), Pieza(CABALLO, DORADO)
+
+    def test_casilla_color(self):
+        t = tablero_8x8_inicial_ejemplo()
+        self.assertNotEqual(casilla_en_posicion(t, Posicion(0,0)), Pieza(CABALLO, PLATEADO))
+
+"""
 class test_hay_casilla_vacia(unittest.TestCase):
 
     def test_casilla_vacia(self):

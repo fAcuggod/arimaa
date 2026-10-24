@@ -128,10 +128,24 @@ def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
         return Posicion(pos.fila, pos.columna - 1)
     else:
         return Posicion(pos.fila, pos.columna + 1)
-"""
-def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
-    raise Exception("No implementado")
 
+def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
+    """
+        Dado un tablero 't', nos da la Casilla en la posicion 'p'
+
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+
+        Args:
+            t (Tablero): El tablero de juego que se analizara
+            p (Posicion): La posicion cuya casilla necesitamos.
+
+        Returns:
+            Casilla de 't' con valores correspondientes a la fila y columna de 'p'
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(p))
+    return t[p.fila][p.columna]
+
+"""
 def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 
