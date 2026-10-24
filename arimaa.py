@@ -46,8 +46,21 @@ def tablero_bien_formado(t : Tablero) -> bool:
     return res
 
 def posicion_en_tablero(pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    """
+        Indica si la posicion "pos" esta dentro del tablero.
 
+        PRE: True
+
+        Args:
+            pos (Posicion): La posicion que determinaremos
+                            si esta dentro del tablero o no.        
+        Returns:
+            True si el valor de fila esta entre 0 (inclusive) y el ALTO,
+               y si el valor de columna esta entre 0 (inclusive) y el ANCHO.
+    """
+    return (0 <= pos.fila) and (pos.fila < ALTO) and (0 <= pos.columna) and (pos.columna < ANCHO)
+
+"""
 def movimiento_bien_formado(m : Movimiento) -> bool:
     raise Exception("No implementado")
 
@@ -107,3 +120,4 @@ def hay_ganador_determinado(j : Juego) -> bool:
 
 def ganador_del_juego(j : Juego) -> Color:
     raise Exception("No implementado")
+"""

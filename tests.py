@@ -75,12 +75,19 @@ class test_tablero_bien_formado(unittest.TestCase):
         t = tablero_8x2()
         self.assertFalse(tablero_bien_formado(t))
 
-"""
+
 class test_posicion_en_tablero(unittest.TestCase):
 
     def test_posicion_ok(self):
         self.assertTrue(posicion_en_tablero(Posicion(5, 3)))
+    
+    def test_posicion_miti(self):
+        self.assertFalse(posicion_en_tablero(Posicion(5,9)))
+    
+    def test_posicion_mal(self):
+        self.assertFalse(posicion_en_tablero(Posicion(10,20)))
 
+"""
 class test_movimiento_bien_formado(unittest.TestCase):
 
     def test_movimiento_ok(self):
