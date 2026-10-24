@@ -328,7 +328,6 @@ def es_tablero_poniendo_pieza(t0: Tablero, t1:Tablero, pos:Posicion, f:Figura, c
 
 def es_tablero_trasladando_pieza(t0 : Tablero, t1: Tablero, pos_origen : Posicion, pos_destino: Posicion) -> bool:
     # (func. aux) decide t1 es el resultado de trasladar la pieza de t0.pos_origen a t1.pos_destino
-    
     f:Figura = t0[pos_origen.fila][pos_origen.columna].figura
     col:Color = t0[pos_origen.fila][pos_origen.columna].color
     hay_figura:bool = hay_figura_de_color(t0, pos_origen, f, col)
@@ -398,7 +397,7 @@ def tablero_post_empujar(t0:Tablero, t1:Tablero, pos:Posicion, d:Direccion, d_em
 def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
     assert juego_bien_formado(j) and movimiento_bien_formado(m)
     assert puede_realizar_movimiento(j, m)
-    res:Tablero = leer_tablero([
+    t1:Tablero = leer_tablero([
               '--------', #7
               '--------', #6
               '--------', #5
@@ -411,31 +410,49 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
             ])
     pos_destino:Posicion = posicion_vecina_hacia(m.origen, m.pasos[0]) #posición a la cual se mueve la pieza del jugador actual
     pieza_propia:Pieza = j.tablero[m.origen.fila][m.origen.columna] #pieza propia que el jugador actual mueve en este movimiento
-
+    pasos_despues:int = j.pasos_consumidos
     if m.accion == MOVER_A_SECAS:
-        res = sacar_pieza(j.tablero, m.origen)
-        res[pos_destino.fila][pos_destino.columna] = pieza_propia
-        assert tablero_post_mover_a_secas(j.tablero, res, m.origen, m.pasos[0])
+        t1 = sacar_pieza(j.tablero, m.origen)
+        t1[pos_destino.fila][pos_destino.columna] = pieza_propia
+        assert tablero_post_mover_a_secas(j.tablero, t1, m.origen, m.pasos[0])
+        pasos_despues = pasos_antes + 1
 
     if m.accion == ARRASTRAR:
-        res = sacar_pieza(j.tablero, m.origen)
+        t1 = sacar_pieza(j.tablero, m.origen)
         pos_enemiga:Posicion = posicion_vecina_hacia(m.origen, opuesta(m.pasos[1])) #la pos_enemiga está en la dirección opuesta del mov que hago para arrastrarla desde pos_propia
-        res[pos_destino.fila][pos_destino.columna] = pieza_propia
-        res = sacar_pieza(res, pos_enemiga)
-        res[m.origen.fila][m.origen.columna] = j.tablero[pos_enemiga] #pieza enemiga
-        assert tablero_post_arrastrar(j.tablero, res, m.origen, m.pasos[0], m.pasos[1])
+        t1[pos_destino.fila][pos_destino.columna] = pieza_propia
+        t1 = sacar_pieza(t1, pos_enemiga)
+        t1[m.origen.fila][m.origen.columna] = j.tablero[pos_enemiga] #pieza enemiga
+        assert tablero_post_arrastrar(j.tablero, t1, m.origen, m.pasos[0], m.pasos[1])
+        pasos_despues = pasos_antes + 2
 
     if m.accion == EMPUJAR:
         pos_enemiga:Posicion = posicion_vecina_hacia(m.origen, m.pasos[0])
-        res = sacar_pieza(j.tablero, pos_enemiga)
+        t1 = sacar_pieza(j.tablero, pos_enemiga)
         pos_hueco:Posicion = posicion_vecina_hacia(pos_enemiga, m.pasos[1]) #posicion a la cual empuja a la enemiga
-        res[pos_hueco.fila][pos_hueco.columna] = j.tablero[pos_enemiga.fila][pos_enemiga.columna] #pieza enemiga
-        res = sacar_pieza(res, m.origen)
-        res[pos_enemiga] = pieza_propia
-        assert tablero_post_empujar(j.tablero, res, m.origen, m.pasos[0], m.pasos[1])
+        t1[pos_hueco.fila][pos_hueco.columna] = j.tablero[pos_enemiga.fila][pos_enemiga.columna] #pieza enemiga
+        t1 = sacar_pieza(t1, m.origen)
+        t1[pos_enemiga] = pieza_propia
+        assert tablero_post_empujar(j.tablero, t1, m.origen, m.pasos[0], m.pasos[1])
+        pasos_despues = pasos_antes + 2
+    turno_nuevo:Color = j.turno
+    if pasos_despues >= MAX_PASOS:
+        turno_nuevo = oponente(j.turno)
     
+    res : Juego = (t1, turno_nuevo, pasos_Consumidos_nuevo)
     assert juego_bien_formado(res)
+    assert juego_post_movimiento(j, res, m)
     return res
+
+def juego_post_movimiento(j0:Juego, j1:Juego, m:Movimiento) -> bool:
+    # func aux
+    c1:bool = tablero_post_movimiento(j0.tablero, j1.tablero, m)
+    c2:bool = juego_con_turno_posiblemente_avanzado(j0, j1, m)
+    return c1 and c2
+
+#def tablero_post_movimiento(t0:Tablero, t1:Tablero, m:Movimiento) (SIN TERMINAR)
+
+
 
 #### Ejercicio 7
 
