@@ -297,10 +297,37 @@ def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion
             res = fuerza(piezaNuestra.figura) > fuerza(casillaEnemiga.figura)
     return res
 
-"""
 def hay_pieza_enemiga_mas_fuerte_vecina(t : Tablero, pos : Posicion) -> bool:
-    raise Exception("No implementado")
+    """
+        Dado un Tablero 't' y una Posicion 'pos',
+        nos dira si en alguna direccion tenemos una ficha del color opuesto
+        cuyo valor de fuerza es mayor al de la figura en 'pos'
 
+        PRE: que tableroBienFormado(t) y posicionEnTablero(p) den True.
+             y que haya una pieza en dicha posicion en el tablero dado.
+
+        Args:
+            t    (Tablero): El tablero de juego que se analizara
+            pos (Posicion): La posicion cuya posible enemiga analizaremos.
+
+        Returns:
+            True si en alguna casilla vecina hay una figura del color opuesto
+            a la de 'pos', y su valor de fuerza es mayor a la misma.
+
+    """
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert(hay_pieza(t, pos))
+    res: bool = False
+    piezaNuestra : Casilla = casilla_en_posicion(t, pos)
+    for d in Direccion:
+        posicionVecina : Posicion = posicion_vecina_hacia(pos, d)
+        casillaEnemiga : Casilla = casilla_en_posicion(t, posicionVecina)
+        if(hay_pieza(t, posicionVecina)):
+            if(es_enemigo(t, pos, posicionVecina)):      
+                res = fuerza(piezaNuestra.figura) < fuerza(casillaEnemiga.figura)
+    return res
+
+"""
 def hay_pieza_congelada(t : Tablero, pos : Posicion) -> bool:
     raise Exception("No implementado")
 
