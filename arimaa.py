@@ -126,7 +126,7 @@ def hay_pieza_amiga_hacia(t: Tablero, pos: Posicion, d: Direccion) -> bool:
 
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    #assert hay_pieza(t, pos)
+    assert hay_pieza(t, pos)
     for d in Direccion:
         if hay_pieza_amiga_hacia(t, pos, d):
             return True
@@ -328,11 +328,10 @@ def es_tablero_poniendo_pieza(t0: Tablero, t1:Tablero, pos:Posicion, f:Figura, c
 
 def es_tablero_trasladando_pieza(t0 : Tablero, t1: Tablero, pos_origen : Posicion, pos_destino: Posicion) -> bool:
     # (func. aux) decide t1 es el resultado de trasladar la pieza de t0.pos_origen a t1.pos_destino
-    hay_figura:bool = False
-    for f in Figura:
-        for col in Color:
-            if hay_figura_de_color(t0, pos_origen, f, col):
-                hay_figura = True
+    
+    f:Figura = t0[pos_origen.fila][pos_origen.columna].figura
+    col:Color = t0[pos_origen.fila][pos_origen.columna].color
+    hay_figura:bool = hay_figura_de_color(t0, pos_origen, f, col)
     t_intermedio: Tablero = sacar_pieza(t0, pos_origen)
     c1:bool = es_tablero_sacando_pieza(t0, t_intermedio, pos_origen)
     c2:bool = es_tablero_poniendo_pieza(t_intermedio, t1, pos_destino, f, col)
