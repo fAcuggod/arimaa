@@ -103,11 +103,32 @@ def juego_bien_formado(j : Juego) -> bool:
             res = True
     return res
 
-"""
 #### Ejercicio 2
 def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
-    raise Exception("No implementado")
+    """
+        Para la posicion "pos", nos da una posicion vecina en la direccion "d".
 
+        PRE: True
+
+        Args:
+            pos (Posicion): La posicion de origen
+            d  (Direccion): La direccion donde se buscara posicion vecina.
+
+        Returns:
+            Si d es NORTE, nos dara una posicion en la misma columna de origen pero fila + 1,
+          y si d es   SUR, nos dara una posicion en la misma columna de origen pero fila - 1, 
+          y si d es OESTE, nos dara una posicion en la misma fila de origen, pero columna - 1,
+          y si d es  ESTE, nos dara una posicion en la misma fila de origen, pero columna + 1
+    """
+    if (d == NORTE):
+        return Posicion(pos.fila + 1, pos.columna)
+    elif (d == SUR):
+        return Posicion(pos.fila - 1, pos.columna)
+    elif (d == OESTE):
+        return Posicion(pos.fila, pos.columna - 1)
+    else:
+        return Posicion(pos.fila, pos.columna + 1)
+"""
 def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
     raise Exception("No implementado")
 
