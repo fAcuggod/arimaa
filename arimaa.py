@@ -19,7 +19,7 @@ def direccion_desde_hasta(pos1 : Posicion, pos2 : Posicion) -> Direccion: # prag
 def pasar_turno(j : Juego) -> Juego: # pragma: no cover
     return Juego(j.tablero, oponente(j.turno), 0)
 
-#### Espacio para Funciones Auxiliares y Constantes propias.
+#### Funciones Auxiliares y Constantes propias.
 
 def hay_pieza(t: Tablero, pos: Posicion) -> bool:
     """
@@ -62,6 +62,114 @@ def es_enemigo(t: Tablero, pos: Posicion, posEnemiga: Posicion) -> bool:
     else:
         res = casilla_en_posicion(t, posEnemiga).color == DORADO
     return res
+
+def direccion_de_movimiento_habilitada(t: Tablero, pos: Posicion, d: Direccion) -> bool:
+    """
+        Dado un tablero 't', posicion 'pos' y direccion 'd'
+        nos dira si podremos movernos en direccion 'd'.
+
+        PRE: Que haya una pieza en la posicion especificada.
+
+        Args:
+            t           (Tablero): el tablero donde estaran ambas posiciones
+            pos        (Posicion): la posicion actual
+            d (Direccion): la direccion en la cual nos queremos mover
+
+        Returns:
+            True al menos que haya una figura Conejo de color Dorado y la direccion sea Sur,
+               o al menos que haya una figura COnejo de color Plateado y la direccion sea Norte
+    """
+    assert(hay_pieza(t, pos))
+    res: bool = True
+    if (casilla_en_posicion(t, pos).figura == CONEJO and casilla_en_posicion(t, pos).color == DORADO):
+        res = not (d == SUR)
+    elif (casilla_en_posicion(t, pos).figura == CONEJO and casilla_en_posicion(t,pos).color == PLATEADO):
+        res = not (d == NORTE)
+    return res
+
+def puede_mover_a_secas(t: Tablero, pos: Posicion, d: Direccion):
+    """
+        Dado un tablero 't', una posicion 'pos' y una direccion 'd',
+        determinara si podemos movernos en esa direccion 'd'.
+
+        PRE: True
+
+        Args:
+            t    (Tablero) : el tablero donde estaran ambas posiciones
+            pos (Posicion) : la posicion desde donde partiremos
+            d  (Direccion) : la direccion en la que deseamos movernos.
+
+        Returns:
+            True si hay_casilla_vacia_Hacia(t,pos,d) nos devuelve true.
+    """
+    return hay_casilla_vacia_hacia(t, pos, d)
+
+def puede_arrastrar(t: Tablero, pos: Posicion, d: Direccion, dArrastre: Direccion):
+    """
+        Dado un tablero 't', una posicion 'pos' y una direccion 'dArrastre',
+        determinara si podemos movernos a 'd' arrastrando la ficha enemiga hacia esa direccion 'dArrastre'.
+
+        PRE: True
+
+        Args:
+            t    (Tablero) : el tablero donde estaran ambas posiciones
+            pos (Posicion) : la posicion desde donde partiremos
+            d (DIreccion): la direccion en la que queremos movernos
+            dArrastre  (Direccion) : la direccion en la que deseamos arrastrar a la ficha enemiga.
+
+        Returns:
+            True si hay_casilla_vacia_Hacia(t,pos,d) y hay_pieza_enemiga_mas_debil_hacia(t, pos, opuesta(dArrastre)) nos devuelven true
+    """
+    return hay_casilla_vacia_hacia(t, pos, d) and hay_pieza_enemiga_mas_debil_hacia(t, pos, opuesta(dArrastre))
+
+def puede_empujar(t: Tablero, pos: Posicion, d: Direccion, dEmpuje: Direccion):
+    """
+        Dado un tablero 't', una posicion 'pos', una direccion 'd' y una direccion 'dEmpuje',
+        determinara si podemos movernos a 'd' empujando la ficha enemiga hacia esa direccion 'dEmpuje'.
+
+        PRE: True
+
+        Args:
+            t    (Tablero) : el tablero donde estaran ambas posiciones
+            pos (Posicion) : la posicion desde donde partiremos
+            d (DIreccion): la direccion en la que queremos movernos
+            dEmpuje  (Direccion) : la direccion en la que deseamos empujar a la ficha enemiga.
+
+        Returns:
+            True si hay_pieza_enemiga_mas_debil_hacia(t, pos, d) da true, y al definir posEnemiga como posicion_vecina_hacia(pos, d), 
+                    hayCasillaVaciaHacia(t, posEnemiga, dEmpuje) nos dan true.
+    """
+    res: bool = False
+    if(hay_pieza_enemiga_mas_debil_hacia(t, pos, d)):
+        posEnemiga : Posicion = posicion_vecina_hacia(pos, d)
+        res = hay_casilla_vacia_hacia(t, posEnemiga, dEmpuje)
+    return res
+
+def puede_realizar_accion(t: Tablero, m: Movimiento) -> bool:
+    """
+        Dado un tablero 't' y un movimiento 'm',
+        determinara si la accion de dicho movimiento es valida.
+
+        PRE: True
+
+        Args:
+            t    (Tablero) : el tablero donde estaran ambas posiciones
+            m (Movimiento) : el movimiento que deseamos realizar
+
+        Returns:
+            True si la accion del movimiento es Mover a Secas y puedeMOverASecas(t, m.origen, m.pasos[0]) devuelve true,
+                ,si la accion del movimiento es Empujar y puedeEmpujar(t, m.origen, m.pasos[0], m.pasos[1]) devuelve true,
+               o si la accion del movimiento es Arrastrar y puedeArrastrar(t, m.origen, m.pasos[0], m.pasos[1]) devuelve true.
+    """
+    res: bool = False
+    if(m.accion == MOVER_A_SECAS):
+        res = puede_mover_a_secas(t, m.origen, m.pasos[0])
+    elif(m.accion == ARRASTRAR):
+        res = puede_arrastrar(t, m.origen, m.pasos[0], m.pasos[1])
+    else:
+        res = puede_empujar(t, m.origen, m.pasos[0], m.pasos[1])
+    return res
+
 
 #### Ejercicio 1
 
@@ -341,12 +449,29 @@ def hay_pieza_congelada(t : Tablero, pos : Posicion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
     return (hay_pieza(t,pos) and hay_pieza_enemiga_mas_fuerte_vecina(t, pos) and not hay_pieza_amiga_vecina(t, pos))
 
-"""
 #### Ejercicio 4
-
 def puede_realizar_movimiento(j : Juego, m : Movimiento) -> bool:
-    raise Exception("No implementado")
+    """
+        Dado un juego "j" y un movimiento "m",
+        determinaremos si se podra realizar dicho movimiento.
 
+        PRE: que juegoBIenFOrmado(j) y movimientoBIenFormado(m) den True.
+
+        Args:
+            j (Juego): El estado actual de la partida.
+            m (Movimiento): El movimiento que se esta intentando realizar.
+
+        Returns:
+            True si hay_pieza_de_color(j.tablero, m.origen, j.turno) da true,
+                    hay_pieza_congelada(j.tablero, m.origen) devuelve false,
+                    direccion_de_movimiento_habilitada(j.tablero, m.origen, m.pasos[0]) da true,
+                    y (j.pasos_consumidos + len(m.pasos) <= MAX_PASOS) and puede_realizar_accion(j.tablero, m) devuelve true.
+
+    """
+    assert(juego_bien_formado(j) and movimiento_bien_formado(m))
+    return (hay_pieza_de_color(j.tablero, m.origen, j.turno) and not hay_pieza_congelada(j.tablero, m.origen) and direccion_de_movimiento_habilitada(j.tablero, m.origen, m.pasos[0]) and (j.pasos_consumidos + len(m.pasos) <= MAX_PASOS) and puede_realizar_accion(j.tablero, m))
+
+"""
 #### Ejercicio 5
 
 def activar_trampas(t : Tablero) -> Tablero:
