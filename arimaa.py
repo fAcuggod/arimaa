@@ -484,7 +484,36 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
 
 #### Ejercicio 7
 
+def esInicioDeTurno (j:Juego, col:Color) -> bool:
+    #funcion aux
+    c1:bool = j.turno == col
+    c2:bool = j.pasos_consumidos == 0
+    return c1 and c2
+
+def hayConejoEnTablero (j:Juego, col:Color) -> bool:
+    res:bool = False
+    for fila in range(ALTO):
+        for columna in range(ANCHO):
+            if hay_figura_de_color(j.tablero, Posicion(fila, columna), CONEJO, col):
+                res = True
+    return res
+def posicionEnFilaInicial(pos:Posicion, col:Color) -> int:
+    res:bool = False
+    if col == DORADO:
+        res = pos.fila == 0
+    else: # col == PLATEADO
+        res = pos.fila == 7
+    return res
+#def hayConejoEnFilaInicialOponente(j:Juego, col:Color) -> bool: (SIN TERMINAR)
+
+
+
 def hay_ganador_determinado(j : Juego) -> bool:
+    # requiere: juego_bien_formado(j)
+    #asegura: res = True <-> hay_ganador_determinado <-> existe col:Color tq es_jugador_ganados(j, col)
+    # es_inicio_de_turno(j, oponente(col)) and reune_condiciones_de_ganar(j,col)
+    # or es inicio_de_turno(j, color) and reune_condiciones_de_ganar_exclusivas(j,col)
+
     raise Exception("No implementado")
 
 def ganador_del_juego(j : Juego) -> Color:

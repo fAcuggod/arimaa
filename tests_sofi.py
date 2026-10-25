@@ -1736,5 +1736,61 @@ class tests_realizar_movimiento(unittest.TestCase):
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
 
+class tests_auxiliares_ej_7(unittest.TestCase):
+    def test_esInicioDeTurno_ok(self):
+        t:Tablero = tablero_8x8_inicial_ejemplo()
+        j:Juego = Juego(t, PLATEADO, 0)
+        self.assertTrue(esInicioDeTurno(j, PLATEADO))
+    def test_esInicioDeTurno_no_por_color(self):
+        t:Tablero = tablero_8x8_inicial_ejemplo()
+        j:Juego = Juego(t, DORADO, 0)
+        self.assertFalse(esInicioDeTurno(j, PLATEADO))
+    def test_esInicioDeTurno_no_por_pasos(self):
+        t:Tablero = tablero_8x8_inicial_ejemplo()
+        j:Juego = Juego(t, PLATEADO, 2)
+        self.assertFalse(esInicioDeTurno(j, PLATEADO))
+    def test_esInicioDeTurno_no_por_ambos(self):
+        t:Tablero = tablero_8x8_inicial_ejemplo()
+        j:Juego = Juego(t, DORADO, 3)
+        self.assertFalse(esInicioDeTurno(j, PLATEADO))
+
+    def test_hayConejoEnTablero_ok(self):
+        t:Tablero = tablero_8x8_inicial_ejemplo()
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(hayConejoEnTablero(j, col))
+    def test_hayConejoEnTablero_no_por_color(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '--------', #5
+              '-----m--', #4
+              '--------', #3
+              '--------', #2
+              '--r-----', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(DORADO)
+        self.assertFalse(hayConejoEnTablero(j, col))
+
+    def test_posicionEnFilaInicial_ok_plateado(self):
+        pos:Posicion = Posicion(7,3)
+        col:Color = PLATEADO
+        self.assertTrue(posicionEnFilaInicial(pos,col))
+    def test_posicionEnFilaInicial_ok_dorado(self):
+        pos:Posicion = Posicion(0,4)
+        col:Color = DORADO
+        self.assertTrue(posicionEnFilaInicial(pos,col))
+    def test_posicionEnFilaInicial_mal_plateado(self):
+        pos:Posicion = Posicion(0,3)
+        col:Color = PLATEADO
+        self.assertFalse(posicionEnFilaInicial(pos,col))
+    def test_posicionEnFilaInicial_mal_dorado(self):
+        pos:Posicion = Posicion(7,4)
+        col:Color = DORADO
+        self.assertFalse(posicionEnFilaInicial(pos,col))     
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
