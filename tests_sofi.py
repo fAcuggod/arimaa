@@ -1707,7 +1707,34 @@ class tests_realizar_movimiento(unittest.TestCase):
         mN = Movimiento(EMPUJAR, Posicion(4, 4), [OESTE, SUR])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
-
+    def test_empujar_cambio_de_turno(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '--Em----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---E----', #4
+               '---m----', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, DORADO, 2) 
+        jN = Juego(tN, PLATEADO, 0) 
+        mN = Movimiento(EMPUJAR, Posicion(4, 2), [ESTE, SUR])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(realizar_movimiento(j0, mN), jN)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

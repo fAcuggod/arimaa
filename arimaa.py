@@ -475,7 +475,7 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
     turno_nuevo:Color = j.turno
     if not (pasos_despues < MAX_PASOS):
         turno_nuevo = oponente(j.turno)
-    
+        pasos_despues = 0
     res:Juego = Juego(t1, turno_nuevo, pasos_despues)
     assert juego_bien_formado(res)
     assert juego_post_movimiento(j, res, m)
