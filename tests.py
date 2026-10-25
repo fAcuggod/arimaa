@@ -143,13 +143,13 @@ class test_posicion_vecina_hacia(unittest.TestCase):
 class test_es_posicion_vecina_hacia(unittest.TestCase): # (test func. aux)
 
     def test_es_pos_vecina_norte(self):
-        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 0), NORTE, Posicion(0, 0)))
+        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 0), NORTE, Posicion(2, 0)))
     def test_no_es_pos_vecina_norte(self):
-        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 0), NORTE, Posicion(1, 1)))
+        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 0), NORTE, Posicion(0, 1)))
     def test_es_pos_vecina_sur(self):
-        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 0), SUR, Posicion(2, 0)))
+        self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 0), SUR, Posicion(0, 0)))
     def test_no_es_pos_vecina_sur(self):
-        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 0), SUR, Posicion(0, 0)))
+        self.assertFalse(es_posicion_vecina_hacia(Posicion(1, 0), SUR, Posicion(2, 0)))
     def test_es_pos_vecina_este(self):
         self.assertTrue(es_posicion_vecina_hacia(Posicion(1, 1), ESTE, Posicion(1, 2)))
     def test_no_es_pos_vecina_este(self):
@@ -1130,6 +1130,490 @@ class test_es_tablero_despues_de_activar_todas_las_trampas(unittest.TestCase): #
 
 #### Ejercicio 6
 
+class test_sacar_pieza(unittest.TestCase): #funcion auxiliar
+    def test_sacar_caballo(self):
+        t0:Tablero = leer_tablero([
+              'H-------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        self.assertEqual(sacar_pieza(t0,Posicion(7,0)), t1)
+
+class test_es_tablero_poniendo_pieza(unittest.TestCase):
+    def test_tablero_vacio_pongo_caballo(self):
+        t0:Tablero = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              'H-------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        
+        self.assertTrue(es_tablero_poniendo_pieza(t0, t1, Posicion(7,0),CABALLO,DORADO))
+    def test_tablero_vacio_pongo_caballo_otro_color(self):
+        t0:Tablero = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              'h-------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        
+        self.assertFalse(es_tablero_poniendo_pieza(t0, t1, Posicion(7,0),CABALLO,DORADO))     
+    def test_tablero_vacio_pongo_caballo_otro_animal(self):
+        t0:Tablero = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              'R-------', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        
+        self.assertFalse(es_tablero_poniendo_pieza(t0, t1, Posicion(7,0),CABALLO,DORADO))
+
+class test_es_tablero_trasladando_pieza(unittest.TestCase):
+    def test_muevo_conejo_dorado(self):
+        t0:Tablero = leer_tablero([
+              '--------', #7
+              '--r-----', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              '--r-----', #7
+              '--------', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              '--------', #1
+              '--------', #0
+              #01234567
+            ])
+        
+        self.assertTrue(es_tablero_trasladando_pieza(t0, t1, Posicion(6,2),Posicion(7,2)))
+    def test_muevo_un_caballo(self):
+        t0:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '----H---', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '-----H--', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertTrue(es_tablero_trasladando_pieza(t0, t1, Posicion(3,4), Posicion(3,5)))
+
+class test_tablero_post_mover_a_secas(unittest.TestCase):
+
+    def test_muevo_un_conejo_plateado(self):
+        t0:Tablero = tablero_8x8_inicial_ejemplo()
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrrr-', #6
+              '-------r', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              'RRRRRRRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(6,7), SUR))
+    
+    def test_muevo_un_conejo_dorado(self):
+        t0:Tablero = tablero_8x8_inicial_ejemplo()
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrrrr', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '---R----', #2
+              'RRR-RRRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(1,3), NORTE))
+
+    def test_no_muevo_nada_y_no_coinciden(self):
+        t0:Tablero = tablero_8x8_inicial_ejemplo()
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrrrr', #6
+              '--------', #5
+              '--------', #4
+              '--R-----', #3
+              '--------', #2
+              'RRR-RRRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertFalse(tablero_post_mover_a_secas(t0, t1, Posicion(1,3), NORTE))
+
+    
+class test_tablero_trasladando_pieza(unittest.TestCase):
+    def test_muevo_un_conejo(self):
+        t0:Tablero = tablero_8x8_inicial_ejemplo()
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              'RRRRRRRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertEqual(tablero_trasladando_pieza(t0, Posicion(6,6), Posicion(5,6)),t1)
+    def test_muevo_un_caballo(self):
+        t0:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '----H---', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrr-r', #6
+              '------r-', #5
+              '--------', #4
+              '-----H--', #3
+              '--------', #2
+              'RR---RRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertEqual(tablero_trasladando_pieza(t0, Posicion(3,4), Posicion(3,5)),t1)
+    def test_no_muevo_un_conejo(self):
+        t0:Tablero = tablero_8x8_inicial_ejemplo()
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'rrrrrrrr', #6
+              '--------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              'RRRRRRRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertNotEqual(tablero_trasladando_pieza(t0, Posicion(6,6), Posicion(5,6)),t1)
+    def test_muevo_a_otra_posicion_de_la_esperada(self):
+        t0:Tablero = tablero_8x8_inicial_ejemplo()
+        t1:Tablero = leer_tablero([
+              'hcdmedch', #7
+              'r-rrrrrr', #6
+              '-r------', #5
+              '--------', #4
+              '--------', #3
+              '--------', #2
+              'RRRRRRRR', #1
+              'HCDMEDCH', #0
+              #01234567
+            ])
+        self.assertNotEqual(tablero_trasladando_pieza(t0, Posicion(6,6), Posicion(5,6)),t1)
+
+class test_tablero_post_arrastrar(unittest.TestCase):
+    def test_arrastro_un_conejo(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m--H-', #4
+               '------r-', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        t1 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m-Hr-', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        self.assertTrue(tablero_post_arrastrar(t0, t1, Posicion(4,6), OESTE, NORTE))
+    def test_arrastro_pieza_mas_fuerte(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m--H-', #4
+               '------e-', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        t1 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m----', #4
+               '------He', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        self.assertTrue(tablero_post_arrastrar(t0, t1, Posicion(3,6), ESTE, SUR))
+    
+class test_tablero_post_empujar(unittest.TestCase):
+    def test_empujo_a_un_conejo(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m----', #4
+               '--Hr----', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        t1 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m----', #4
+               '---H----', #3
+               '---r----', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        self.assertTrue(tablero_post_empujar(t0, t1, Posicion(3,2),ESTE,SUR))
+    def test_empujo_a_un_gato(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---Cm---', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        t1 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '---C----', #5
+               '---m----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        self.assertTrue(tablero_post_empujar(t0, t1, Posicion(4,4),OESTE,NORTE))
+        
+class test_juego_post_movimiento(unittest.TestCase):
+    def test_juego_bien(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '---m----', #5
+               '--------', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, PLATEADO, 0) 
+        jN = Juego(tN, PLATEADO, 1) 
+        mN = Movimiento(MOVER_A_SECAS, Posicion(4, 3), [NORTE])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(juego_post_movimiento(j0, mN), jN)
+
+class test_juego_post_movimiento(unittest.TestCase):
+    def test_hay_que_cambiar_de_turno_moverASecas(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '---m----', #5
+               '--------', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, PLATEADO, 0) 
+        jN = Juego(tN, PLATEADO, 1) 
+        mN = Movimiento(MOVER_A_SECAS, Posicion(4, 3), [NORTE])
+        self.assertTrue(juego_post_movimiento(j0, jN, mN))
+    def test_hay_que_cambiar_de_turno_turnosMaxeados(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '---m----', #5
+               '--------', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, PLATEADO, 3) 
+        jN = Juego(tN, PLATEADO, 4) 
+        mN = Movimiento(MOVER_A_SECAS, Posicion(4, 3), [NORTE])
+        self.assertFalse(juego_post_movimiento(j0, jN, mN))
+    def test_hay_que_cambiar_de_turno_turnosMaxeados(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---m----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '---m----', #5
+               '--------', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, PLATEADO, 3) 
+        jN = Juego(tN, DORADO, 0) 
+        mN = Movimiento(MOVER_A_SECAS, Posicion(4, 3), [NORTE])
+        self.assertTrue(juego_post_movimiento(j0, jN, mN))
+
+
 class test_realizar_movimiento(unittest.TestCase):
  
     def test_mover_a_secas(self):
@@ -1160,6 +1644,93 @@ class test_realizar_movimiento(unittest.TestCase):
         mN = Movimiento(MOVER_A_SECAS, Posicion(4, 3), [NORTE])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
+    def test_arrastrar(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---mR---', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '---m----', #5
+               '---R----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, PLATEADO, 0) 
+        jN = Juego(tN, PLATEADO, 2) 
+        mN = Movimiento(ARRASTRAR, Posicion(4, 3), [NORTE, OESTE])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(realizar_movimiento(j0, mN), jN)
+    def test_empujar(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---mE---', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---E----', #4
+               '---m----', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, DORADO, 0) 
+        jN = Juego(tN, DORADO, 2) 
+        mN = Movimiento(EMPUJAR, Posicion(4, 4), [OESTE, SUR])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(realizar_movimiento(j0, mN), jN)
+    def test_empujar_cambio_de_turno(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '--Em----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---E----', #4
+               '---m----', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, DORADO, 2) 
+        jN = Juego(tN, PLATEADO, 0) 
+        mN = Movimiento(EMPUJAR, Posicion(4, 2), [ESTE, SUR])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(realizar_movimiento(j0, mN), jN)
+
+
+
 
 #### Ejercicio 7
 

@@ -472,6 +472,7 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
         t1[pos_enemiga.fila][pos_enemiga.columna] = pieza_propia
         assert tablero_post_empujar(j.tablero, t1, m.origen, m.pasos[0], m.pasos[1])
         pasos_despues = pasos_antes + 2
+        
     turno_nuevo:Color = j.turno
     if not (pasos_despues < MAX_PASOS):
         turno_nuevo = oponente(j.turno)
