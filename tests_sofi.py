@@ -951,7 +951,7 @@ class test_es_tablero_despues_de_activar_trampa(unittest.TestCase): # (test func
         t2 = leer_tablero([
               '--------', #7
               '--d-----', #6
-              '---r----', #5
+              '--r-----', #5
               '--------', #4
               '---H----', #3
               '--------', #2
@@ -959,7 +959,7 @@ class test_es_tablero_despues_de_activar_trampa(unittest.TestCase): # (test func
               '--------', #0
               #01234567
             ])
-        self.assertFalse(es_tablero_despues_de_activar_trampa(t1, t2, Posicion(5, 2)))
+        self.assertTrue(es_tablero_despues_de_activar_trampa(t1, t2, Posicion(5, 2)))
     def test_es_tablero_despues_de_activar_trampa_tableros_iguales(self):
         t1 = leer_tablero([
               '--------', #7
@@ -1294,6 +1294,7 @@ class test_es_tablero_trasladando_pieza(unittest.TestCase):
         self.assertTrue(es_tablero_trasladando_pieza(t0, t1, Posicion(3,4), Posicion(3,5)))
 
 class test_tablero_post_mover_a_secas(unittest.TestCase):
+
     def test_muevo_un_conejo_plateado(self):
         t0:Tablero = tablero_8x8_inicial_ejemplo()
         t1:Tablero = leer_tablero([
@@ -1308,6 +1309,7 @@ class test_tablero_post_mover_a_secas(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(6,7), SUR))
+    
     def test_muevo_un_conejo_dorado(self):
         t0:Tablero = tablero_8x8_inicial_ejemplo()
         t1:Tablero = leer_tablero([
@@ -1321,8 +1323,8 @@ class test_tablero_post_mover_a_secas(unittest.TestCase):
               'HCDMEDCH', #0
               #01234567
             ])
-        self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(2,3), NORTE))
-
+        self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(1,3), NORTE))
+    
 class test_tablero_trasladando_pieza(unittest.TestCase):
     def test_muevo_un_conejo(self):
         t0:Tablero = tablero_8x8_inicial_ejemplo()

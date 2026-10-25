@@ -68,12 +68,12 @@ def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
 def es_posicion_vecina_hacia(pos: Posicion, d: Direccion, pos2: Posicion) -> bool:
     # (func. aux) decide si dos posiciones pos y pos2 son vecinas en dirección d
     if d == NORTE:
-        return pos2.fila == (pos.fila - 1) and pos2.columna == pos.columna
-    elif d == SUR:
         return pos2.fila == (pos.fila + 1) and pos2.columna == pos.columna
+    elif d == SUR:
+        return pos2.fila == (pos.fila - 1) and pos2.columna == pos.columna
     elif d == ESTE:
         return pos2.fila == pos.fila and pos2.columna == (pos.columna + 1)
-    else:
+    else: #d == OESTE:
         return pos2.fila == pos.fila and pos2.columna == (pos.columna - 1)
 
 def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
@@ -126,7 +126,8 @@ def hay_pieza_amiga_hacia(t: Tablero, pos: Posicion, d: Direccion) -> bool:
 
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    assert hay_pieza(t, pos)
+    if not hay_pieza(t, pos): #si no hay pieza contesto falso porque no hay pieza a la que encontrarle la amiga
+        return False # se puede mover este if a HAY PIEZA AMIGA HACIA ****
     for d in Direccion:
         if hay_pieza_amiga_hacia(t, pos, d):
             return True
@@ -256,6 +257,8 @@ def es_tablero_despues_de_activar_trampa(t0: Tablero, t1: Tablero, postrampa: Po
         return False
     elif hay_pieza_amiga_vecina(t0, postrampa):
         return True
+    else:
+        pass
     return es_tablero_sacando_pieza(t0, t1, postrampa)
 
 def tablero_post_activar_trampa(t: Tablero, postrampa: Posicion) -> Tablero:
