@@ -504,28 +504,52 @@ def posicionEnFilaInicial(pos:Posicion, col:Color) -> int:
     else: # col == PLATEADO
         res = pos.fila == 7
     return res
+
 def hayConejoEnFilaInicialOponente(j:Juego, col:Color) -> bool:
     pos:Posicion = Posicion (0,0)
     res:bool = False
-    for columna in range (ANCHO):
-        if oponente(col) == PLATEADO:
+    if oponente(col) == PLATEADO:
+        for columna in range (ANCHO):
             pos = Posicion(7, columna)
             assert posicionEnFilaInicial(pos, oponente(col))
-            res = hay_figura_de_color(j.tablero, pos, CONEJO, col)
-        else:
+            if hay_figura_de_color(j.tablero, pos, CONEJO, col):
+                res = True
+    else:
+        for columna in range (ANCHO):
             pos = Posicion(0, columna)
             assert posicionEnFilaInicial(pos, oponente(col))
-            res = hay_figura_de_color(j.tablero, pos, CONEJO, col)
+            if hay_figura_de_color(j.tablero, pos, CONEJO, col):
+                res = True
     return res
 
+def reuneCondicionesDeGanar(j:Juego, col:Color) -> bool:
+    c1:bool = hayConejoEnFilaInicialOponente(j, col)
+    c2:bool = not (hayConejoEnTablero(j, oponente(col)))
+    return c1 or c2
+
+def reuneCondicionesDeGanarExclusivas(j:Juego, col:Color) -> bool:
+    c1:bool = reuneCondicionesDeGanar(j, col)
+    c2:bool = not(reuneCondicionesDeGanar(j, oponente(col)))
+    return c1 and c2
+
+def esJugadorGanador(j:Juego, col:Color) -> bool:
+    c1:bool = esInicioDeTurno(j, oponente(col)) and reuneCondicionesDeGanar(j, col)
+    c2:bool = esInicioDeTurno(j, col) and reuneCondicionesDeGanarExclusivas(j, col)
+    return c1 or c2
 
 def hay_ganador_determinado(j : Juego) -> bool:
-    # requiere: juego_bien_formado(j)
-    #asegura: res = True <-> hay_ganador_determinado <-> existe col:Color tq es_jugador_ganados(j, col)
-    # es_inicio_de_turno(j, oponente(col)) and reune_condiciones_de_ganar(j,col)
-    # or es inicio_de_turno(j, color) and reune_condiciones_de_ganar_exclusivas(j,col)
-
-    raise Exception("No implementado")
+    assert juego_bien_formado(j)
+    res:bool = False
+    for col in LISTA_DE_LOS_COLORES:
+        if esJugadorGanador(j, col):
+            res = True
+    return res
 
 def ganador_del_juego(j : Juego) -> Color:
-    raise Exception("No implementado")
+    assert juego_bien_formado(j)
+    assert hay_ganador_determinado(j)
+    ganador:Color = j.turno
+    for col in LISTA_DE_LOS_COLORES:
+        if esJugadorGanador(j, col):
+            ganador:Color = col
+    return ganador

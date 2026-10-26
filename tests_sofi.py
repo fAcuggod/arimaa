@@ -1792,7 +1792,22 @@ class tests_auxiliares_ej_7(unittest.TestCase):
         col:Color = DORADO
         self.assertFalse(posicionEnFilaInicial(pos,col))     
 
-    def test_hayConejoEnFilaInicialOponente(self):
+    def test_hayConejoEnFilaInicialOponente_dorado(self):
+        t:Tablero = leer_tablero([
+              '-----R--', #7
+              '---H----', #6
+              '--------', #5
+              '-----m--', #4
+              '--------', #3
+              '--------', #2
+              '--r-----', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(DORADO)
+        self.assertTrue(hayConejoEnFilaInicialOponente(j, col))
+    def test_hayConejoEnFilaInicialOponente_plateado(self):
         t:Tablero = leer_tablero([
               '--------', #7
               '---H----', #6
@@ -1801,12 +1816,227 @@ class tests_auxiliares_ej_7(unittest.TestCase):
               '--------', #3
               '--------', #2
               '--r-----', #1
-              '---r----', #0
+              '-----r--', #0
               #01234567
             ])
         j:Juego = Juego(t, PLATEADO, 1)
         col:Color = Color(PLATEADO)
         self.assertTrue(hayConejoEnFilaInicialOponente(j, col))
 
+    def test_reuneCondicionesDeGanar_plateado_con_conejo_propio(self):
+        t:Tablero = leer_tablero([
+              '-R------', #7
+              '---H--R-', #6
+              '--------', #5
+              '-----m--', #4
+              '-R------', #3
+              '--------', #2
+              '--r-----', #1
+              '-----r--', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(reuneCondicionesDeGanar(j, col))
+    def test_reuneCondicionesDeGanar_dorado_con_conejo_propio(self):
+        t:Tablero = leer_tablero([
+              '--R-----', #7
+              '---H--R-', #6
+              '--------', #5
+              '-----m--', #4
+              '-R------', #3
+              '--------', #2
+              '--r-----', #1
+              '-----r--', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(DORADO)
+        self.assertTrue(reuneCondicionesDeGanar(j, col))
+    def test_reuneCondicionesDeGanar_plateado_por_falta_conejo_oponente(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '--------', #5
+              '-E---m--', #4
+              '--------', #3
+              '--------', #2
+              '--r-----', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(reuneCondicionesDeGanar(j, col))
+    def test_reuneCondicionesDeGanar_dorado_por_falta_conejo_oponente(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H--R-', #6
+              '--------', #5
+              '-----m--', #4
+              '-R------', #3
+              '--------', #2
+              '-d---c--', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(DORADO)
+        self.assertTrue(reuneCondicionesDeGanar(j, col))
+
+
+    def test_reuneCondicionesDeGanarExclusivas_plateado_con_conejo_propio(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H--R-', #6
+              '--------', #5
+              '-----m--', #4
+              '-R------', #3
+              '--------', #2
+              '--r-----', #1
+              '-----r--', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(reuneCondicionesDeGanarExclusivas(j, col))
+    def test_reuneCondicionesDeGanarExclusivas_dorado_con_conejo_propio(self):
+        t:Tablero = leer_tablero([
+              '--R-----', #7
+              '---H--R-', #6
+              '--------', #5
+              '-----m--', #4
+              '-R------', #3
+              '--------', #2
+              '--r-----', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(DORADO)
+        self.assertTrue(reuneCondicionesDeGanarExclusivas(j, col))
+    def test_reuneCondicionesDeGanarExclusivas_plateado_por_falta_conejo_oponente(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '--------', #5
+              '-E---m--', #4
+              '--------', #3
+              '--------', #2
+              '--r-----', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(reuneCondicionesDeGanarExclusivas(j, col))
+    def test_reuneCondicionesDeGanarExclusivas_dorado_por_falta_conejo_oponente(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H--R-', #6
+              '--------', #5
+              '-----m--', #4
+              '-R------', #3
+              '--------', #2
+              '-d---c--', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(DORADO)
+        self.assertTrue(reuneCondicionesDeGanarExclusivas(j, col))
+
+    def test_esJugadorGanador_plateado_por_falta_de_conejos_dorados(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '--------', #5
+              '-----m--', #4
+              '-r------', #3
+              '--------', #2
+              '-d---c--', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, DORADO, 0)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(esJugadorGanador(j, col))
+    def test_esJugadorGanador_plateado_por_conejo_propio(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '-R------', #5
+              '-----m--', #4
+              '-r------', #3
+              '--------', #2
+              '-d---c--', #1
+              '---r----', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, DORADO, 0)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(esJugadorGanador(j, col))
+    def test_esJugadorGanador_dorado_por_falta_de_conejos_plateados(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '-R------', #5
+              '-----m--', #4
+              '--------', #3
+              '--------', #2
+              '-d---c--', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 0)
+        col:Color = Color(DORADO)
+        self.assertTrue(esJugadorGanador(j, col))
+    def test_esJugadorGanador_dorado_por_conejo_propio(self):
+        t:Tablero = leer_tablero([
+              '------R-', #7
+              '---H----', #6
+              '-R------', #5
+              '-----m--', #4
+              '-r------', #3
+              '--------', #2
+              '-d---c--', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 0)
+        col:Color = Color(DORADO)
+        self.assertTrue(esJugadorGanador(j, col))
+    def test_esJugadorGanador_plateado_exclusivo_en_su_turno(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '--------', #5
+              '-----m--', #4
+              '-r------', #3
+              '--------', #2
+              '-d---c--', #1
+              '----r---', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 0)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(esJugadorGanador(j, col))
+    def test_esJugadorGanador_dorado_exclusivo_en_su_turno(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '-R------', #5
+              '-----m--', #4
+              '--------', #3
+              '--------', #2
+              '-d---c--', #1
+              '--------', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, DORADO, 0)
+        col:Color = Color(DORADO)
+        self.assertTrue(esJugadorGanador(j, col))
+
+    
 if __name__ == '__main__':
     unittest.main(verbosity=2)
