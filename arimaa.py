@@ -79,9 +79,9 @@ def es_posicion_vecina_hacia(pos: Posicion, d: Direccion, pos2: Posicion) -> boo
     else: #d == OESTE:
         return pos2.fila == pos.fila and pos2.columna == (pos.columna - 1)
 
-def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
-    assert(tablero_bien_formado(t) and posicion_en_tablero(p))
-    return t[p.fila][p.columna]
+def casilla_en_posicion(t : Tablero, pos : Posicion) -> Casilla:
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    return t[pos.fila][pos.columna]
 
 def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
     c1:bool = posicion_en_tablero(pos)
@@ -92,6 +92,7 @@ LISTA_DE_TODAS_LAS_FIGURAS = [ELEFANTE, CAMELLO, CABALLO, PERRO, GATO, CONEJO]
 LISTA_DE_LOS_COLORES = [DORADO, PLATEADO]
 
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos)) #requiere del ej ppal
     res:bool = False
     for f in Figura:
         if hay_figura_de_color(t,pos,f,col):
