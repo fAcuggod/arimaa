@@ -504,8 +504,19 @@ def posicionEnFilaInicial(pos:Posicion, col:Color) -> int:
     else: # col == PLATEADO
         res = pos.fila == 7
     return res
-#def hayConejoEnFilaInicialOponente(j:Juego, col:Color) -> bool: (SIN TERMINAR)
-
+def hayConejoEnFilaInicialOponente(j:Juego, col:Color) -> bool:
+    pos:Posicion = Posicion (0,0)
+    res:bool = False
+    for columna in range (ANCHO):
+        if oponente(col) == PLATEADO:
+            pos = Posicion(7, columna)
+            assert posicionEnFilaInicial(pos, oponente(col))
+            res = hay_figura_de_color(j.tablero, pos, CONEJO, col)
+        else:
+            pos = Posicion(0, columna)
+            assert posicionEnFilaInicial(pos, oponente(col))
+            res = hay_figura_de_color(j.tablero, pos, CONEJO, col)
+    return res
 
 
 def hay_ganador_determinado(j : Juego) -> bool:

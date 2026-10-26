@@ -1792,5 +1792,21 @@ class tests_auxiliares_ej_7(unittest.TestCase):
         col:Color = DORADO
         self.assertFalse(posicionEnFilaInicial(pos,col))     
 
+    def test_hayConejoEnFilaInicialOponente(self):
+        t:Tablero = leer_tablero([
+              '--------', #7
+              '---H----', #6
+              '--------', #5
+              '-----m--', #4
+              '--------', #3
+              '--------', #2
+              '--r-----', #1
+              '---r----', #0
+              #01234567
+            ])
+        j:Juego = Juego(t, PLATEADO, 1)
+        col:Color = Color(PLATEADO)
+        self.assertTrue(hayConejoEnFilaInicialOponente(j, col))
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
