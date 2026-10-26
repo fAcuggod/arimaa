@@ -91,6 +91,13 @@ LISTA_DE_TODAS_LAS_FIGURAS = [ELEFANTE, CAMELLO, CABALLO, PERRO, GATO, CONEJO]
 LISTA_DE_LOS_COLORES = [DORADO, PLATEADO]
 
 def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
+    res:bool = False
+    for f in Figura:
+        if hay_figura_de_color(t,pos,f,col):
+            res = True
+    return res
+    
+    """
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
     es_figura:bool = False
     es_color:bool = False
@@ -103,13 +110,18 @@ def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
     if t[pos.fila][pos.columna].color == col:
         es_color = True
     return es_color and es_figura
-
+    """
+    
 def hay_figura_de_color(t:Tablero, pos: Posicion, f: Figura, col: Color): 
     #funcion auxiliar que se fija si está una figura especifica
     res:bool = False
-    if hay_pieza_de_color(t, pos, col):
-        res = t[pos.fila][pos.columna].figura == f
-    return res
+    if posicion_en_tablero(pos) and not hay_casilla_vacia(t, pos):
+        res = t[pos.fila][pos.columna].figura == f and t[pos.fila][pos.columna].color == col
+    return res   
+    #res:bool = False
+    #if posicion_en_tablero(pos) and hay_pieza_de_color(t, pos, col):
+    #        res = t[pos.fila][pos.columna].figura == f
+    #return res
 
 #### Ejercicio 3
 
