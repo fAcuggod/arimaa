@@ -1752,5 +1752,39 @@ class test_ganador_del_juego(unittest.TestCase):
         self.assertTrue(hay_ganador_determinado(j))
         self.assertEqual(ganador_del_juego(j), DORADO)
 
+class test_ganador_del_juego(unittest.TestCase):
+
+    def test_promueve_conejo_dorado_turno_del_oponente(self):
+        t = leer_tablero([
+              'rr----Rr', #7
+              'c-----me', #6
+              '---Ed-R-', #5
+              '-M---R--', #4
+              '---R----', #3
+              '-rrrr---', #2
+              '-H---DCC', #1
+              'R-----RR', #0
+              #01234567
+            ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertTrue(hay_ganador_determinado(j))
+        self.assertEqual(ganador_del_juego(j), DORADO)
+    def test_promueve_conejo_plateado_turno_del_oponente(self):
+        t = leer_tablero([
+              'rr-----r', #7
+              'c-----me', #6
+              '---Ed-R-', #5
+              '-M---R--', #4
+              '---R----', #3
+              '-rrrr---', #2
+              '-H---DCC', #1
+              'R--r--RR', #0
+              #01234567
+            ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertTrue(hay_ganador_determinado(j))
+        self.assertEqual(ganador_del_juego(j), PLATEADO)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
