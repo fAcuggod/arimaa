@@ -78,8 +78,8 @@ class test_posicion_en_tablero(unittest.TestCase):
         self.assertTrue(posicion_en_tablero(Posicion(5, 3)))
     def test_borde_0_0(self):
         self.assertTrue(posicion_en_tablero(Posicion(0,0)))
-    def test_borde_8_8(self):
-        self.assertTrue(posicion_en_tablero(Posicion(8,8)))
+    def test_borde_7_7(self):
+        self.assertTrue(posicion_en_tablero(Posicion(7,7)))
     def test_afuera_fila(self):
         self.assertFalse(posicion_en_tablero(Posicion(-2,3)))
     def test_afuera_columna(self):
@@ -339,6 +339,8 @@ class test_hay_pieza_enemiga_mas_debil_hacia(unittest.TestCase):
               #01234567
             ])
         self.assertFalse(hay_pieza_enemiga_mas_debil_hacia(t, Posicion(1, 3), ESTE))
+
+
 
 class test_hay_pieza_enemiga_mas_fuerte_hacia(unittest.TestCase): # (test func. aux)
 
