@@ -84,8 +84,9 @@ def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
     return t[p.fila][p.columna]
 
 def hay_casilla_vacia(t : Tablero, pos : Posicion) -> bool:
-    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    return t[pos.fila][pos.columna] == VACIA
+    c1:bool = posicion_en_tablero(pos)
+    c2:bool = t[pos.fila][pos.columna] == VACIA
+    return c1 and c2
 
 LISTA_DE_TODAS_LAS_FIGURAS = [ELEFANTE, CAMELLO, CABALLO, PERRO, GATO, CONEJO]
 LISTA_DE_LOS_COLORES = [DORADO, PLATEADO]
@@ -143,11 +144,12 @@ def hay_pieza_amiga_hacia(t: Tablero, pos: Posicion, d: Direccion) -> bool:
     return res
 
 def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
-    assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
+    assert(tablero_bien_formado(t) and posicion_en_tablero(pos)) #requiere de la especificacion
+    res:bool = False
     for d in Direccion:
         if hay_pieza_amiga_hacia(t, pos, d):
-            return True
-    return False
+            res = True
+    return res
 
 def hay_pieza(t : Tablero, pos : Posicion) -> bool:
     # (func. aux) decide si existe una pieza en el tablero t posición pos
