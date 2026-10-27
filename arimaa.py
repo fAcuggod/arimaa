@@ -157,8 +157,8 @@ def puede_realizar_accion(t: Tablero, m: Movimiento) -> bool:
             m (Movimiento) : el movimiento que deseamos realizar
 
         Returns:
-            True si la accion del movimiento es Mover a Secas y puedeMOverASecas(t, m.origen, m.pasos[0]) devuelve true,
-                ,si la accion del movimiento es Empujar y puedeEmpujar(t, m.origen, m.pasos[0], m.pasos[1]) devuelve true,
+            True si la accion del movimiento es Mover a Secas y puedeMoverASecas(t, m.origen, m.pasos[0]) devuelve true,
+                 si la accion del movimiento es Empujar y puedeEmpujar(t, m.origen, m.pasos[0], m.pasos[1]) devuelve true,
                o si la accion del movimiento es Arrastrar y puedeArrastrar(t, m.origen, m.pasos[0], m.pasos[1]) devuelve true.
     """
     res: bool = False
@@ -277,6 +277,23 @@ def copiar_tablero(t: Tablero) -> Tablero:
             tableroClon[fila][columna] = t[fila][columna]
     return tableroClon
 
+def copiar_pieza(t: Tablero, p: Posicion) -> Pieza:
+    """
+        Dada una posicion 'p' en el tablero 't', copia la pieza correpsondiente a esa posicion.
+
+        PRE: Que hay_pieza(t, p) sea true.
+
+        Args:
+            t (Tablero): Tablero donde se encuenra la pieza
+            p (Posicion): Posicion de la pieza.
+
+        Returns:
+            res, la pieza correpsondiente a esa posicion.
+    """
+    assert(hay_pieza(t, p))
+    res: Pieza = Pieza(casilla_en_posicion(t, p).figura, casilla_en_posicion(t, p).color)
+    return res
+
 def tablero_post_activar_trampa(t: Tablero, posTrampa: Posicion) -> Tablero:
     """
         Dado un tablero y una posicion de trampa, se asegura que las condiciones esten dadas para activarla y en caso de serlo, remueve la pieza afectada.
@@ -320,6 +337,8 @@ def es_tablero_despues_de_activar_todas_las_trampas(t0: Tablero, t1: Tablero) ->
             if es_tablero_despues_de_activar_trampa(tableroIntermedio1, tableroIntermedio2, posTrampa): trampasActivas.append(posTrampa)
             tableroIntermedio1 = tableroIntermedio2
     return trampasActivas == POSICIONES_TRAMPA
+
+
 
 #### Ejercicio 1
 
@@ -637,14 +656,14 @@ def activar_trampas(t : Tablero) -> Tablero:
     res: Tablero = copiar_tablero(t)
     for trampa in POSICIONES_TRAMPA:
         res = tablero_post_activar_trampa(res, trampa)
-    
-    return res
-    
-"""
+    return res  
+
 #### Ejercicio 6
 
+"""
 def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
-    raise Exception("No implementado")
+    assert(juego_bien_formado(j) and movimiento_bien_formado(j, m))
+   
 
 #### Ejercicio 7
 

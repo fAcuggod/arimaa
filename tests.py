@@ -691,10 +691,16 @@ class test_tablero_post_activar_trampa(unittest.TestCase):
 class test_copiar_tableros(unittest.TestCase):
 
     def test_copiar_tablero(self):
-        t1 = tablero_8x8_inicial_ejemplo()
+        t1: Tablero = tablero_8x8_inicial_ejemplo()
         t2: Tablero = copiar_tablero(t1)
         self.assertEqual(t1, t2)
-        
+
+class test_copiar_pieza(unittest.TestCase):
+    def test_copiar_pieza(self):
+        t: Tablero = tablero_8x8_inicial_ejemplo()
+        p: Pieza = copiar_pieza(t, Posicion(1,1))
+        self.assertEqual(p, t[1][1])
+
 #### Ejercicio 1
 
 class test_tablero_bien_formado(unittest.TestCase):

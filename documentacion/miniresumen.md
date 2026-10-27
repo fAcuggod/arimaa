@@ -346,7 +346,7 @@ tableroPostArrastrar(t0, t1: Tablero, pos: Posicion, d, darrastre: Direccion)
         y esTableroTrasladandoPieza(t0, tintermedio1, pos, poshueco)
         y esTableroTrasladandoPieza(tintermedio1, tintermedio2, posenemiga, pos)
         y esTableroDespuesDeActivarTOdasLasTrampas(tintermedio2, t1)
-    )
+    ) 
 
 tableroPostEmpujar(t0, t1: Tablero, pos: Posicion, d, dempuje: DIreccion)
     := existe posenemiga, poshueco: Posicion, existe tintermedio1, tintermedio2: Tablero, (
