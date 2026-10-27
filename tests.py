@@ -1085,11 +1085,16 @@ class test_activar_trampas(unittest.TestCase):
             ])
         self.assertEqual(activar_trampas(t), t1)
 
-"""
 #### Ejercicio 6
-
 class test_realizar_movimiento(unittest.TestCase):
- 
+
+    def test_no_puede_realizar_movimiento(self):
+        t0 = tablero_8x8_inicial_ejemplo()
+        j0 = Juego(t0, PLATEADO, 0)
+        mInvalido = Movimiento(MOVER_A_SECAS, Posicion(1,0), [NORTE])
+        self.assertFalse(puede_realizar_movimiento(j0, mInvalido))
+        self.assertEqual(realizar_movimiento(j0, mInvalido), j0)
+
     def test_mover_a_secas(self):
         t0 = leer_tablero([
                'rrrrrrrr', #7
@@ -1119,8 +1124,97 @@ class test_realizar_movimiento(unittest.TestCase):
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
 
+    def test_arrastrar(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---mR---', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '---m----', #5
+               '---R----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, PLATEADO, 0) 
+        jN = Juego(tN, PLATEADO, 2) 
+        mN = Movimiento(ARRASTRAR, Posicion(4, 3), [NORTE, OESTE])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(realizar_movimiento(j0, mN), jN)
+
+    def test_empujar(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---mE---', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---E----', #4
+               '---m----', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, DORADO, 0) 
+        jN = Juego(tN, DORADO, 2) 
+        mN = Movimiento(EMPUJAR, Posicion(4, 4), [OESTE, SUR])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(realizar_movimiento(j0, mN), jN)
+
+    def test_empujar_cambio_de_turno(self):
+        t0 = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '--Em----', #4
+               '--------', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        tN = leer_tablero([
+               'rrrrrrrr', #7
+               'ccddhh-e', #6
+               '--------', #5
+               '---E----', #4
+               '---m----', #3
+               '--------', #2
+               'EMHHDDCC', #1
+               'RRRRRRRR', #0
+               #01234567
+             ])
+        j0 = Juego(t0, DORADO, 2) 
+        jN = Juego(tN, PLATEADO, 0) 
+        mN = Movimiento(EMPUJAR, Posicion(4, 2), [ESTE, SUR])
+        self.assertTrue(puede_realizar_movimiento(j0, mN))
+        self.assertEqual(realizar_movimiento(j0, mN), jN)
+
+
 #### Ejercicio 7
 
+"""
 class test_ganador_del_juego(unittest.TestCase):
 
     def test_promueve_conejo_dorado_turno_del_oponente(self):

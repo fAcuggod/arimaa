@@ -338,8 +338,6 @@ def es_tablero_despues_de_activar_todas_las_trampas(t0: Tablero, t1: Tablero) ->
             tableroIntermedio1 = tableroIntermedio2
     return trampasActivas == POSICIONES_TRAMPA
 
-
-
 #### Ejercicio 1
 
 def tablero_bien_formado(t : Tablero) -> bool:
@@ -660,13 +658,45 @@ def activar_trampas(t : Tablero) -> Tablero:
 
 #### Ejercicio 6
 
-"""
 def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
-    assert(juego_bien_formado(j) and movimiento_bien_formado(j, m))
-   
+    assert(juego_bien_formado(j) and movimiento_bien_formado(m))
+    t: Tablero = copiar_tablero(j.tablero)
+    pasosHechos : int = 0
+    pasosPrevios : int = j.pasos_consumidos
+    posEnemigo : Posicion = Posicion(0,0)
+    posDestino : Posicion = posicion_vecina_hacia(m.origen, m.pasos[0])
+    piezaJugador : Pieza = copiar_pieza(j.tablero, Posicion(m.origen.fila,m.origen.columna))
+    if(puede_realizar_movimiento(j, m)):
+        if (m.accion == MOVER_A_SECAS):
+            t[posDestino.fila][posDestino.columna] = piezaJugador
+            t[m.origen.fila][m.origen.columna] = VACIA
+            pasosHechos = pasosPrevios + 1
+        elif (m.accion == ARRASTRAR):
+            posEnemigo = posicion_vecina_hacia(m.origen, opuesta(m.pasos[1]))
+            t[m.origen.fila][m.origen.columna] = casilla_en_posicion(t, posEnemigo)
+            t[posDestino.fila][posDestino.columna] = piezaJugador
+            t[posEnemigo.fila][posEnemigo.columna] = VACIA
+            pasosHechos = pasosPrevios + 2
+        else:
+            posEnemigo = posicion_vecina_hacia(m.origen, m.pasos[0])
+            t[m.origen.fila][m.origen.columna] = VACIA
+            posHueco : Posicion = posicion_vecina_hacia(posEnemigo, m.pasos[1])
+            t[posHueco.fila][posHueco.columna] = j.tablero[posEnemigo.fila][posEnemigo.columna]
+            t[posEnemigo.fila][posEnemigo.columna] = piezaJugador
+            pasosHechos = pasosPrevios + 2            
+
+    turnoNuevo : Color = j.turno
+
+    if pasosHechos >= MAX_PASOS:
+        turnoNuevo = oponente(j.turno)
+        pasosHechos = 0
+
+    res : Juego = Juego(t, turnoNuevo, pasosHechos)
+    return res
 
 #### Ejercicio 7
 
+"""
 def hay_ganador_determinado(j : Juego) -> bool:
     raise Exception("No implementado")
 
