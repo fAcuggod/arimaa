@@ -242,7 +242,7 @@ def tableros_coinciden_en_la_posicion(t1: Tablero, t2: Tablero, pos: Posicion) -
     # (func. aux) decide si la posición pos es la misma para t1 y t2
     return t1[pos.fila][pos.columna] == t2[pos.fila][pos.columna]
 
-def tableros_coinciden_salvo_en_la_posicion(t1: Tablero, t2: Tablero, pos: Posicion):
+def tableros_coinciden_salvo_en_la_posicion(t1: Tablero, t2: Tablero, pos: Posicion) -> bool:
     # (func. aux) decide si dos tableros coinciden salvo en la posición pos
     for pos_fila in range(ALTO):
         for pos_columna in range(ANCHO):
@@ -266,7 +266,7 @@ def es_tablero_despues_de_activar_trampa(t0: Tablero, t1: Tablero, postrampa: Po
     return es_tablero_sacando_pieza(t0, t1, postrampa)
 
 def tablero_post_activar_trampa(t: Tablero, postrampa: Posicion) -> Tablero:
-    # (func. aux) dado un tablero t, devuelve el tablero luego de activar la trampa
+    # (func. aux) dado un tablero t, devuelve el tablero luego de activar la trampa en la posicion postrampa
     assert tablero_bien_formado(t)
     res: Tablero = leer_tablero([
               '--------', #7
@@ -328,7 +328,7 @@ def sacar_pieza(t: Tablero, pos : Posicion) -> Tablero:
     return res
 
 def es_tablero_poniendo_pieza(t0: Tablero, t1:Tablero, pos:Posicion, f:Figura, col:Color) -> bool:
-    #func aux decide si poniendo la pieza de figura f y color col en t0 se obtiene un tablero igual a t1
+    # (func. aux) decide si poniendo la pieza de figura f y color col en t0 se obtiene un tablero igual a t1
     c1:bool = tableros_coinciden_salvo_en_la_posicion(t0, t1, pos)
     c2:bool = hay_figura_de_color(t1, pos, f, col)
     return c1 and c2
@@ -353,7 +353,7 @@ def tablero_post_mover_a_secas(t0 : Tablero, t1: Tablero, pos: Posicion, d : Dir
     return c1 and c2 and c3
 
 def tablero_trasladando_pieza(t:Tablero, pos_origen:Posicion, pos_destino:Posicion) -> Tablero:
-    #func aux que mueve la pieza que estaba en pos_origen de t y la mueve a pos_destino
+    # (func. aux) que mueve la pieza que estaba en pos_origen de t y la mueve a pos_destino
     assert tablero_bien_formado(t)
     res:Tablero = leer_tablero([
               '--------', #7
@@ -377,7 +377,7 @@ def tablero_trasladando_pieza(t:Tablero, pos_origen:Posicion, pos_destino:Posici
     return res
     
 def tablero_post_arrastrar(t0:Tablero, t1:Tablero, pos:Posicion, d:Direccion, d_arrastre:Direccion) -> bool:
-    #func aux
+    # (func. aux)
     pos_hueco:Posicion = posicion_vecina_hacia(pos, d)
     pos_enemiga:Posicion = posicion_vecina_hacia(pos, opuesta(d_arrastre))
     t_intermedio1:Tablero = tablero_trasladando_pieza(t0, pos, pos_hueco)
@@ -418,7 +418,7 @@ def juego_con_turno_posiblemente_avanzado (j0 :Juego, j1:Juego, m:Movimiento) ->
     return res
 
 def juego_post_movimiento(j0:Juego, j1:Juego, m:Movimiento) -> bool:
-    # func aux meto tablero post movimiento acá adentro en vez de hacerla aparte
+    # (func. aux) meto tablero post movimiento acá adentro en vez de hacerla aparte
     c1:bool = False
     if m.accion == MOVER_A_SECAS:
         c1 = tablero_post_mover_a_secas(j0.tablero, j1.tablero, m.origen, m.pasos[0])
