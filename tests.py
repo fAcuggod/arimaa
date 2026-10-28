@@ -1995,6 +1995,21 @@ class test_ganador_del_juego(unittest.TestCase):
         j = Juego(t, PLATEADO, 0)
         self.assertTrue(hay_ganador_determinado(j))
         self.assertEqual(ganador_del_juego(j), DORADO)
+    def test_ganador_del_juego_es_plateado(self):
+        t = leer_tablero([
+                      'rr----Dr', #7
+                      'c-----me', #6
+                      '---Ed-R-', #5
+                      '-M---R--', #4
+                      '---R----', #3
+                      '-rrrr---', #2
+                      '-H---DCC', #1
+                      'Rr----RR', #0
+                      #01234567
+                    ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertTrue(hay_ganador_determinado(j))
+        self.assertEqual(ganador_del_juego(j), PLATEADO)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

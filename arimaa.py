@@ -38,7 +38,6 @@ def posicion_en_tablero(pos : Posicion) -> bool:
     return res
 
 def movimiento_bien_formado(m : Movimiento) -> bool:
-    # raise Exception("No implementado")
     res: bool = False
     if posicion_en_tablero(m.origen):
         if m.accion == MOVER_A_SECAS and len(m.pasos) == 1:

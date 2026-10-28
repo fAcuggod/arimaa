@@ -312,7 +312,7 @@ class test_hay_pieza_congelada(unittest.TestCase):
 # EJERCICIO 4
 
 class test_direccion_de_movimiento_habilitada(unittest.TestCase): # (test func. aux)
-    
+
     def test_direccion_de_mov_conejo_dorado_ok(self):
         t = leer_tablero([
               '--d--H-D', #7
