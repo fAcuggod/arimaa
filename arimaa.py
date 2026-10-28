@@ -1,5 +1,13 @@
 from definiciones import *
 
+## pendientes (tengo useño lol)
+# - checkear formas
+#  - acatar ejercicios
+#  - refactorear auxiliares
+#  - tipeados
+#  - docstrings
+# - vericicar en campus
+
 #### Algunas funciones ya dadas
 def son_posiciones_vecinas(pos1 : Posicion, pos2 : Posicion) -> bool: # pragma: no cover
     return (pos1.fila == pos2.fila and abs(pos1.columna - pos2.columna) == 1) \
@@ -385,11 +393,9 @@ def posicion_en_tablero(pos : Posicion) -> bool:
         PRE: True
 
         Args:
-            pos (Posicion): La posicion que determinaremos
-                            si esta dentro del tablero o no.
+            pos (Posicion): La posicion que determinaremos si esta dentro del tablero o no.
         Returns:
-            True si el valor de fila esta entre 0 (inclusive) y el ALTO,
-               y si el valor de columna esta entre 0 (inclusive) y el ANCHO.
+            True si el valor de fila esta entre 0 (inclusive) y el ALTO, y si el valor de columna esta entre 0 (inclusive) y el ANCHO.
     """
     return ((0 <= pos.fila) and (pos.fila < ALTO)) and ((0 <= pos.columna) and (pos.columna < ANCHO))
 
