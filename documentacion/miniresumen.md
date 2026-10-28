@@ -193,8 +193,8 @@ juegoBienFormado(j: Juego)
 esPosicionVecinaHacia(pos: Posicion, d: Direccion, pos': Posicion)
     := (d = NORTE -> (pos'.fila = pos.fila + 1 y pos'.columna = pos.columna))
      y (d = SUR   -> (pos'.fila = pos.fila - 1 y pos'.columna = pos.columna))
-     y (d = ESTE  -> (pos'.fila = pos.fila y pos'.columna = pos.columna + 1))
-     y (d = OESTE -> (pos'.fila = pos.fila y pos'.columna = pos.columna - 1))
+     y (d = ESTE  -> (pos'.fila = pos.fila y pos'.columna = pos.columna - 1))
+     y (d = OESTE -> (pos'.fila = pos.fila y pos'.columna = pos.columna + 1))
 
 hayCasillaVacia(t: Tablero, pos: Posicion)
     := posicionEnTablero(pos)
@@ -408,98 +408,6 @@ esJugadorGanador(j, Juego, col: Color)
 
 hayGanadorDeterminado(j: Juego)
     := existe col:Color, esJugadorGanador(j, col)
-
-# Ejercicios
-
-## Ejercicio 1
-
-tablero_bien_formado: recibe t: Tablero y devuelve Bool.
-    requiere: True
-    asegura: res true si tableroBienFormado(t) da True.
-
-posicion_en_tablero: recibe pos: Posicion y devuelve Bool
-    requiere: True
-    asegura: res true si posicionEnTablero(pos) da True.
-
-movimiento_bien_formado: recibe m: Movimiento y devuelve BOol
-    requiere: True
-    asegura: res true si movimientoBienFormado(m) da True
-
-juego_bien_formado: recibe j: Juego y devuelve Bool
-    requiere: True
-    assegura: res true si juegoBienFormado(j) da True
-
-## Ejercicio 2
-
-posicion_vecina_hacia: recibe pos: Posicion y d: Direccion y devuelve Posicion
-    requiere: True
-    asegura: esPosicionVecinaHacia(pos,d, res)
-
-casilla_en_posicion: recibe t:Tablero y pos: Posicion y devuelve Casilla
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    asegura: res = t[pos.fila][pos.columna]
-
-hay_casilla_vacia: recibe t: Tablero y pos: Posicion y devuelve booleano
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    asegura: res true si hayCasillaVacia(t, pos)
-
-hay_pieza_de_color: recibe t: Tablero, pos: Posicion y col: Color y devuelve booleano
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    asegura: res true si hayPiezaDeColor(t, pos, col)
-
-## Ejercicio 3
-
-hay_casilla_vacia_hacia: recibe t: Tablero, pos: Posicion y d: Direccino y devuelve booleano
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    asegura: res true si hayCasillaVaciaHacia(t, pos, d)
-
-hay_pieza_amiga_vecina: recibe t: Tablero, pos: Posicion y devuelve booleano
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    requiere: hayPieza(t, pos)
-    asegura: res true si hayPiezaAmigaVecina(t, pos)
-
-hay_pieza_enemiga_mas_debil_hacia: recibe t: Tablero, pos: Posicion y d: Direccion, devuelve booleano
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    requiere: hayPieza(t, pos)
-    asegura: res true si hayPiezaEnemigaMasDebilHacia(t, pos, d)
-
-hay_pieza_enemiga_mas_fuerte_vecina: recibe t: Tablero, pos: Posicion, devuelve booleano
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    requiere: hayPieza(t, pos)
-    asegura: res true si hayPiezaEnemigaMasFuerteVecina(t, pos)
-
-hay_pieza_congelada: recibe t: Tablero, pos: Posicion, devuelve booleano
-    requiere: tableroBienFormado(t) y posicionEnTablero(pos)
-    asegura: res true si hayPiezaCongelada(t, pos)
-
-## Ejercicio 4
-puede_realizar_movimiento: recibe j: Juego, m: Movimiento, devuelve boleano
-    requiere: juegoBienFormado(j) y movimientoBienFormado(m)
-    asegura: res true si puedeRealizarMovimiento(j, m)
-
-## Ejercicio 5
-activar_trampas: recibe t: Tablero y devuelve Tablero
-    requiere: tableroBienFormado(t)
-    asegura:  tableroBienFormado(res)
-    asegura: esTableroDespuesDeActivarTodasLasTrampas(t, res)
-
-## Ejercicio 6
-realizar_movimiento: recibe j: Juego y m: Movimiento, devuelve Juego
-    requiere: juegoBienFormado(j) y movimientoBienFormado(m)
-    requiere: puedeRealizarMovimiento(j, m)
-    asegura: juegoBienFOrmado(res)
-    asegura: juegoPostMovimiento(j, res, m)
-
-## Ejercicio 7
-hay_ganador_determinado: recibe j: Juego y devuelve booleano.
-    requiere: juegoBienFormado(j)
-    asegura: res true si hayGanadorDeterminado(j)
-
-ganador_del_juego: recibe j: Juego y devuelve Color
-    requiere: juegoBIenFormado(j)
-    requiere: hayGanadorDeterminado(j)
-    asegura: esJugadorGanador(j, res)
-
 
 ## Comandos útiles
 

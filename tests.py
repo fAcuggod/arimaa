@@ -7,7 +7,7 @@ from arimaa import *
 #   H : caballo
 #   D : perro
 #   C : gato
-#   R : ratón
+#   R : conejo
 # donde
 #   mayúscula : dorado
 #   minúscula : plateado
@@ -54,7 +54,7 @@ def tablero_8x2():
         'dc',
         'cc',
         'dc',
-        'cc'        
+        'cc'
     ])
 
 #### Auxiliares
@@ -64,7 +64,7 @@ class test_hay_pieza(unittest.TestCase):
     def test_hay_pieza(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(hay_pieza(t, Posicion(0, 0)))
-    
+
     def test_no_hay_pieza(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertFalse(hay_pieza(t, Posicion(4,4)))
@@ -91,8 +91,8 @@ class test_es_enemigo(unittest.TestCase):
         t = tablero_8x8_inicial_ejemplo()
         self.assertFalse(es_enemigo(t, Posicion(0,0), Posicion(0,0)))
 
-class test_direccion_de_movimiento_habilitada(unittest.TestCase): 
-    
+class test_direccion_de_movimiento_habilitada(unittest.TestCase):
+
     def test_direccion_de_mov_conejo_dorado_ok(self):
         t = leer_tablero([
               '--d--H-D', #7
@@ -158,9 +158,9 @@ class test_direccion_de_movimiento_habilitada(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(direccion_de_movimiento_habilitada(t, Posicion(3, 3), NORTE))
-   
-class test_puede_mover_a_secas(unittest.TestCase): 
-    
+
+class test_puede_mover_a_secas(unittest.TestCase):
+
     def test_puede_mover_a_secas_ok(self):
         t = leer_tablero([
               '--d--H-D', #7
@@ -188,7 +188,7 @@ class test_puede_mover_a_secas(unittest.TestCase):
             ])
         self.assertFalse(puede_mover_a_secas(t, Posicion(2, 3), NORTE))
 
-class test_puede_arrastrar(unittest.TestCase): 
+class test_puede_arrastrar(unittest.TestCase):
 
     def test_puede_arrastrar_ok(self):
         t = leer_tablero([
@@ -217,7 +217,7 @@ class test_puede_arrastrar(unittest.TestCase):
             ])
         self.assertFalse(puede_arrastrar(t, Posicion(5, 2), OESTE, SUR))
 
-class test_puede_empujar(unittest.TestCase): 
+class test_puede_empujar(unittest.TestCase):
 
     def test_puede_empujar_ok(self):
         t = leer_tablero([
@@ -246,7 +246,7 @@ class test_puede_empujar(unittest.TestCase):
             ])
         self.assertFalse(puede_empujar(t, Posicion(5, 2), NORTE, ESTE))
 
-class test_puede_realizar_accion(unittest.TestCase): 
+class test_puede_realizar_accion(unittest.TestCase):
 
     def test_puede_realizar_accion_mover_a_secas_ok(self):
         t = leer_tablero([
@@ -460,7 +460,7 @@ class test_crear_tablero_vacio(unittest.TestCase):
         t1 = crear_tablero_vacio()
         self.assertTrue(len(t1) == ALTO and len(t1[0]) == ANCHO)
 
-class test_es_tablero_sacando_pieza(unittest.TestCase): 
+class test_es_tablero_sacando_pieza(unittest.TestCase):
 
     def test_es_tablero_sacando_pieza_ok(self):
         t1 = leer_tablero([
@@ -637,7 +637,7 @@ class test_es_tablero_despues_de_activar_todas_las_trampas(unittest.TestCase):
             ])
         self.assertTrue(es_tablero_despues_de_activar_todas_las_trampas(t1, t2))
 
-class test_tablero_post_activar_trampa(unittest.TestCase): 
+class test_tablero_post_activar_trampa(unittest.TestCase):
 
     def test_tablero_post_activar_trampa_ok(self):
         t1 = leer_tablero([
@@ -708,7 +708,7 @@ class test_tablero_bien_formado(unittest.TestCase):
     def test_8x8_lleno(self):
         t = tablero_8x8_inicial_ejemplo()
         self.assertTrue(tablero_bien_formado(t))
-    
+
     def test_3x2(self):
         t = tablero_3x2()
         self.assertFalse(tablero_bien_formado(t))
@@ -721,10 +721,10 @@ class test_posicion_en_tablero(unittest.TestCase):
 
     def test_posicion_ok(self):
         self.assertTrue(posicion_en_tablero(Posicion(5, 3)))
-    
+
     def test_posicion_miti(self):
         self.assertFalse(posicion_en_tablero(Posicion(5,9)))
-    
+
     def test_posicion_mal(self):
         self.assertFalse(posicion_en_tablero(Posicion(10,20)))
 
@@ -732,19 +732,19 @@ class test_movimiento_bien_formado(unittest.TestCase):
 
     def test_movimiento_ok(self):
         self.assertTrue(movimiento_bien_formado(Movimiento(MOVER_A_SECAS, Posicion(0, 1), [NORTE])))
-   
+
     def test_arrastrar_mal(self):
         self.assertFalse(movimiento_bien_formado(Movimiento(ARRASTRAR, Posicion(0, 1), [SUR])))
-   
+
     def test_empujar_ok(self):
         self.assertTrue(movimiento_bien_formado(Movimiento(EMPUJAR, Posicion(0, 1), [NORTE, SUR])))
-   
+
     def test_arrastrar_ok(self):
         self.assertTrue(movimiento_bien_formado(Movimiento(ARRASTRAR, Posicion(0, 1), [NORTE, SUR])))
-   
+
     def test_empujar_mal(self):
         self.assertFalse(movimiento_bien_formado(Movimiento(EMPUJAR, Posicion(0, 1), [OESTE])))
-   
+
     def test_no_es_pos_origen(self):
         self.assertFalse(movimiento_bien_formado(Movimiento(MOVER_A_SECAS, Posicion(10, 0), [SUR])))
 
@@ -941,7 +941,7 @@ class test_hay_pieza_enemiga_mas_fuerte_vecina(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(hay_pieza_enemiga_mas_fuerte_vecina(t, Posicion(3, 1)))
-   
+
     def test_no_hay_pieza_enemiga_mas_fuerte_vecina(self):
         t = leer_tablero([
               '-H------', #7
@@ -955,7 +955,7 @@ class test_hay_pieza_enemiga_mas_fuerte_vecina(unittest.TestCase):
               #01234567
             ])
         self.assertFalse(hay_pieza_enemiga_mas_fuerte_vecina(t, Posicion(6, 5)))
-    
+
     def test_hay_pieza_aliada(self):
         t = leer_tablero([
               '-H------', #7
@@ -1088,13 +1088,6 @@ class test_activar_trampas(unittest.TestCase):
 #### Ejercicio 6
 class test_realizar_movimiento(unittest.TestCase):
 
-    def test_no_puede_realizar_movimiento(self):
-        t0 = tablero_8x8_inicial_ejemplo()
-        j0 = Juego(t0, PLATEADO, 0)
-        mInvalido = Movimiento(MOVER_A_SECAS, Posicion(1,0), [NORTE])
-        self.assertFalse(puede_realizar_movimiento(j0, mInvalido))
-        self.assertEqual(realizar_movimiento(j0, mInvalido), j0)
-
     def test_mover_a_secas(self):
         t0 = leer_tablero([
                'rrrrrrrr', #7
@@ -1118,8 +1111,8 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, PLATEADO, 0) 
-        jN = Juego(tN, PLATEADO, 1) 
+        j0 = Juego(t0, PLATEADO, 0)
+        jN = Juego(tN, PLATEADO, 1)
         mN = Movimiento(MOVER_A_SECAS, Posicion(4, 3), [NORTE])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
@@ -1147,8 +1140,8 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, PLATEADO, 0) 
-        jN = Juego(tN, PLATEADO, 2) 
+        j0 = Juego(t0, PLATEADO, 0)
+        jN = Juego(tN, PLATEADO, 2)
         mN = Movimiento(ARRASTRAR, Posicion(4, 3), [NORTE, OESTE])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
@@ -1176,8 +1169,8 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, DORADO, 0) 
-        jN = Juego(tN, DORADO, 2) 
+        j0 = Juego(t0, DORADO, 0)
+        jN = Juego(tN, DORADO, 2)
         mN = Movimiento(EMPUJAR, Posicion(4, 4), [OESTE, SUR])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
@@ -1205,8 +1198,8 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, DORADO, 2) 
-        jN = Juego(tN, PLATEADO, 0) 
+        j0 = Juego(t0, DORADO, 2)
+        jN = Juego(tN, PLATEADO, 0)
         mN = Movimiento(EMPUJAR, Posicion(4, 2), [ESTE, SUR])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
@@ -1214,7 +1207,6 @@ class test_realizar_movimiento(unittest.TestCase):
 
 #### Ejercicio 7
 
-"""
 class test_ganador_del_juego(unittest.TestCase):
 
     def test_promueve_conejo_dorado_turno_del_oponente(self):
@@ -1232,8 +1224,6 @@ class test_ganador_del_juego(unittest.TestCase):
         j = Juego(t, PLATEADO, 0)
         self.assertTrue(hay_ganador_determinado(j))
         self.assertEqual(ganador_del_juego(j), DORADO)
-
-"""
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -21,6 +21,30 @@ def pasar_turno(j : Juego) -> Juego: # pragma: no cover
 
 #### Funciones Auxiliares y Constantes propias.
 
+def es_posicion_vecina_hacia(pos: Posicion, d: Direccion, posPrima: Posicion) -> bool:
+    """
+        Para la posicion "pos", nos dira si 'posPrima' es su posicion vecina en la direccion "d".
+
+        PRE: True
+
+        Args:
+            pos (Posicion): La posicion de origen
+            d  (Direccion): La direccion donde se buscara posicion vecina.
+            posPrima (Posicion): La posicion vecina a evaluar.
+
+        Returns:
+            Si d es NORTE, nos dira si posPrima es la posicion en la misma columna de origen pero fila + 1,
+          y si d es   SUR, nos dira si posPrima es la posicion en la misma columna de origen pero fila - 1,
+          y si d es OESTE, nos dira si posPrima es la posicion en la misma fila de origen, pero columna - 1,
+          y si d es  ESTE, nos dira si posPrima es la posicion en la misma fila de origen, pero columna + 1
+    """
+    res : bool = False
+    if (d == NORTE): res = posPrima.fila == pos.fila + 1 and posPrima.columna == pos.columna
+    elif (d == SUR): res = posPrima.fila == pos.fila - 1 and posPrima.columna == pos.columna
+    elif (d == OESTE): res = posPrima.fila == pos.fila and posPrima.columna == pos.columna - 1
+    else: res = posPrima.fila == pos.fila and posPrima.columna == pos.columna + 1
+    return res
+
 def hay_pieza(t: Tablero, pos: Posicion) -> bool:
     """
         Dado un tablero 't' y una posicion 'pos',
@@ -55,13 +79,8 @@ def es_enemigo(t: Tablero, pos: Posicion, posEnemiga: Posicion) -> bool:
             True si la Figura en la posicion 'pos' es de color Dorado y la de 'posEnemiga' es Plateado
                o si la Figura en la posicion 'pos' es de color plateado y la de 'posEnemiga' es Dorado
     """
-    assert(hay_pieza(t, pos))
-    assert(hay_pieza(t, posEnemiga))
-    if(casilla_en_posicion(t, pos).color == DORADO):
-        res = casilla_en_posicion(t, posEnemiga).color == PLATEADO
-    else:
-        res = casilla_en_posicion(t, posEnemiga).color == DORADO
-    return res
+    assert(hay_pieza(t, pos) and hay_pieza(t, posEnemiga))
+    return casilla_en_posicion(t, posEnemiga).color == oponente(casilla_en_posicion(t, pos).color)
 
 def direccion_de_movimiento_habilitada(t: Tablero, pos: Posicion, d: Direccion) -> bool:
     """
@@ -82,9 +101,9 @@ def direccion_de_movimiento_habilitada(t: Tablero, pos: Posicion, d: Direccion) 
     assert(hay_pieza(t, pos))
     res: bool = True
     if (casilla_en_posicion(t, pos).figura == CONEJO and casilla_en_posicion(t, pos).color == DORADO):
-        res = not (d == SUR)
+        res = d != SUR
     elif (casilla_en_posicion(t, pos).figura == CONEJO and casilla_en_posicion(t,pos).color == PLATEADO):
-        res = not (d == NORTE)
+        res = d != NORTE
     return res
 
 def puede_mover_a_secas(t: Tablero, pos: Posicion, d: Direccion) -> bool:
@@ -136,7 +155,7 @@ def puede_empujar(t: Tablero, pos: Posicion, d: Direccion, dEmpuje: Direccion) -
             dEmpuje  (Direccion) : la direccion en la que deseamos empujar a la ficha enemiga.
 
         Returns:
-            True si hay_pieza_enemiga_mas_debil_hacia(t, pos, d) da true, y al definir posEnemiga como posicion_vecina_hacia(pos, d), 
+            True si hay_pieza_enemiga_mas_debil_hacia(t, pos, d) da true, y al definir posEnemiga como posicion_vecina_hacia(pos, d),
                     hayCasillaVaciaHacia(t, posEnemiga, dEmpuje) nos dan true.
     """
     res: bool = False
@@ -215,7 +234,7 @@ def es_tablero_sacando_pieza(t0: Tablero, t1: Tablero, pos: Posicion) -> bool:
         Args:
             t0, t1 (Tablero): Tableros a comparar.
             pos (Posicion): Posicion de la pieza a sacar.
-        
+
         Returns:
             True si los tableros coinciden exceptaundo la posicion dada y t1 tiene la casilla pos vacia, por ende la pieza fue sacada.
     """
@@ -230,7 +249,7 @@ def es_tablero_despues_de_activar_trampa(t0: Tablero, t1: Tablero, posTrampa: Po
         Args:
             t0, t1    (Tableros): Los tableros a comparar
             posTrampa (Posicion): La posicion donde la trampa deberia ser activada.
-        
+
         Returns:
             True si hay una pieza amiga vecina cerca de posTrampa y los tableros son iguales,
                  En caso de que no haya una pieza amiga cerca, se devolvera el valor de es_tablero_sacando_pieza(t0, t1, posTrampa)
@@ -248,7 +267,7 @@ def crear_tablero_vacio() -> Tablero:
 
         PRE: True
 
-        Args: 
+        Args:
 
         Returns:
             Un tablero vacio segun los valores de ALTO y ANCHO.
@@ -267,7 +286,7 @@ def copiar_tablero(t: Tablero) -> Tablero:
 
         Args:
             t (Tablero): El tablero a copiar.
-        
+
         Returns:
             Nos devolvera un tablero exactamente igual al que ingresamos.
     """
@@ -303,7 +322,7 @@ def tablero_post_activar_trampa(t: Tablero, posTrampa: Posicion) -> Tablero:
         Args:
             t (Tablero): El tablero donde activaremos la trampa
             posTrampa (Posicion): La posicion de la trampa a activar.
-        
+
         Returns:
             Nos da un tablero donde, en caso de ser las condiciones adecuadas para la trampa, la pieza afectada es sacada de juego, de lo contrario, es igual al original.
     """
@@ -321,7 +340,7 @@ def es_tablero_despues_de_activar_todas_las_trampas(t0: Tablero, t1: Tablero) ->
 
         Args:
             t0, t1 (Tablero): Idealmente los dos distintos estados del tablero en juego.
-        
+
         Returns:
             True si el tablero t1 es una version de t0 donde todas las trampas fueron activadas donde son validas.
     """
@@ -347,19 +366,16 @@ def tablero_bien_formado(t : Tablero) -> bool:
         PRE: True
 
         Args:
-            t (Tablero): El tablero de juego para el cual se
-                         indica si esta bien formado.
-        
+            t (Tablero): El tablero de juego para el cual se indica si esta bien formado.
+
         Returns:
-            True si la longitud de t (Su cantidad de filas) coincide con la altura ALTO,
-            y despues revisa si la longitud de estas filas coincide con el largo ANCHO.
+            True si la longitud de t (Su cantidad de filas) coincide con la altura ALTO, y si la longitud de estas filas (por ende cantidad de columnas) coincide con el largo ANCHO.
     """
     res: bool = False
     if (len(t) == ALTO):
+        res = True
         for fila in t:
-            if (len(fila) != ANCHO):
-                return res
-            res = True
+            if (len(fila) != ANCHO): res = False
     return res
 
 def posicion_en_tablero(pos : Posicion) -> bool:
@@ -370,7 +386,7 @@ def posicion_en_tablero(pos : Posicion) -> bool:
 
         Args:
             pos (Posicion): La posicion que determinaremos
-                            si esta dentro del tablero o no.        
+                            si esta dentro del tablero o no.
         Returns:
             True si el valor de fila esta entre 0 (inclusive) y el ALTO,
                y si el valor de columna esta entre 0 (inclusive) y el ANCHO.
@@ -391,13 +407,7 @@ def movimiento_bien_formado(m : Movimiento) -> bool:
                y si su accion es mover a secas y contiene un elemento de paso
                y si su accion es arrastrar O empujar y contiene dos elementos de pasos.
     """
-    res: bool = False
-    if (posicion_en_tablero(m.origen)):
-        if(m.accion == MOVER_A_SECAS and len(m.pasos) == 1):
-            res = True
-        elif((m.accion == ARRASTRAR or m.accion == EMPUJAR) and len(m.pasos) == 2):
-            res = True
-    return res
+    return posicion_en_tablero(m.origen) and ((m.accion == MOVER_A_SECAS and len(m.pasos) == 1) or (m.accion == ARRASTRAR or m.accion == EMPUJAR) and len(m.pasos) == 2)
 
 def juego_bien_formado(j : Juego) -> bool:
     """
@@ -412,11 +422,7 @@ def juego_bien_formado(j : Juego) -> bool:
             True si el tablero esta bien formado
                y si los pasos consumidos estan entre 0 (inclusive) y Max_Pasos
     """
-    res: bool = False
-    if(tablero_bien_formado(j.tablero)):
-        if((0 <= j.pasos_consumidos) and (j.pasos_consumidos < MAX_PASOS)):
-            res = True
-    return res
+    return tablero_bien_formado(j.tablero) and (0 <= j.pasos_consumidos) and (j.pasos_consumidos < MAX_PASOS)
 
 #### Ejercicio 2
 
@@ -432,18 +438,17 @@ def posicion_vecina_hacia(pos : Posicion, d : Direccion) -> Posicion:
 
         Returns:
             Si d es NORTE, nos dara una posicion en la misma columna de origen pero fila + 1,
-          y si d es   SUR, nos dara una posicion en la misma columna de origen pero fila - 1, 
+          y si d es   SUR, nos dara una posicion en la misma columna de origen pero fila - 1,
           y si d es OESTE, nos dara una posicion en la misma fila de origen, pero columna - 1,
           y si d es  ESTE, nos dara una posicion en la misma fila de origen, pero columna + 1
     """
-    if (d == NORTE):
-        return Posicion(pos.fila + 1, pos.columna)
-    elif (d == SUR):
-        return Posicion(pos.fila - 1, pos.columna)
-    elif (d == OESTE):
-        return Posicion(pos.fila, pos.columna - 1)
-    else:
-        return Posicion(pos.fila, pos.columna + 1)
+    res : Posicion
+    if (d == NORTE): res = Posicion(pos.fila + 1, pos.columna)
+    elif (d == SUR): res = Posicion(pos.fila - 1, pos.columna)
+    elif (d == OESTE): res = Posicion(pos.fila, pos.columna - 1)
+    else: res = Posicion(pos.fila, pos.columna + 1)
+    assert (es_posicion_vecina_hacia(pos, d, res))
+    return res
 
 def casilla_en_posicion(t : Tablero, p : Posicion) -> Casilla:
     """
@@ -494,7 +499,7 @@ def hay_pieza_de_color(t : Tablero, pos : Posicion, col : Color) -> bool:
             True si la casilla contiene una Pieza cuyo color = col
     """
     assert(tablero_bien_formado(t) and posicion_en_tablero(pos))
-    return casilla_en_posicion(t, pos).color == col
+    return hay_pieza(t,pos) and casilla_en_posicion(t,pos).color == col
 
 #### Ejercicio 3
 
@@ -537,7 +542,7 @@ def hay_pieza_amiga_vecina(t : Tablero, pos : Posicion) -> bool:
         if(hay_pieza(t, posicion_vecina_hacia(pos, d)) and casilla_en_posicion(t, posicion_vecina_hacia(pos, d)).color == casilla_en_posicion(t, pos).color):
             res = True
     return res
-    
+
 def hay_pieza_enemiga_mas_debil_hacia(t : Tablero, pos : Posicion, d : Direccion) -> bool:
     """
         Dado un Tablero 't', una Posicion 'pos' y una Direccion 'd',
@@ -606,7 +611,7 @@ def hay_pieza_congelada(t : Tablero, pos : Posicion) -> bool:
             pos (Posicion): La posicion de la pieza.
 
         Returns:
-            True si hay una pieza en la posicion dada del tablero, 
+            True si hay una pieza en la posicion dada del tablero,
                     cerca suyo hay una pieza enemiga mas fuerte
                     y no hay una pieza aliada cerca.
     """
@@ -654,36 +659,35 @@ def activar_trampas(t : Tablero) -> Tablero:
     res: Tablero = copiar_tablero(t)
     for trampa in POSICIONES_TRAMPA:
         res = tablero_post_activar_trampa(res, trampa)
-    return res  
+    return res
 
 #### Ejercicio 6
 
 def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
-    assert(juego_bien_formado(j) and movimiento_bien_formado(m))
+    assert(juego_bien_formado(j) and movimiento_bien_formado(m) and puede_realizar_movimiento(j, m))
     t: Tablero = copiar_tablero(j.tablero)
     pasosHechos : int = 0
     pasosPrevios : int = j.pasos_consumidos
     posEnemigo : Posicion = Posicion(0,0)
     posDestino : Posicion = posicion_vecina_hacia(m.origen, m.pasos[0])
     piezaJugador : Pieza = copiar_pieza(j.tablero, Posicion(m.origen.fila,m.origen.columna))
-    if(puede_realizar_movimiento(j, m)):
-        if (m.accion == MOVER_A_SECAS):
-            t[posDestino.fila][posDestino.columna] = piezaJugador
-            t[m.origen.fila][m.origen.columna] = VACIA
-            pasosHechos = pasosPrevios + 1
-        elif (m.accion == ARRASTRAR):
-            posEnemigo = posicion_vecina_hacia(m.origen, opuesta(m.pasos[1]))
-            t[m.origen.fila][m.origen.columna] = casilla_en_posicion(t, posEnemigo)
-            t[posDestino.fila][posDestino.columna] = piezaJugador
-            t[posEnemigo.fila][posEnemigo.columna] = VACIA
-            pasosHechos = pasosPrevios + 2
-        else:
-            posEnemigo = posicion_vecina_hacia(m.origen, m.pasos[0])
-            t[m.origen.fila][m.origen.columna] = VACIA
-            posHueco : Posicion = posicion_vecina_hacia(posEnemigo, m.pasos[1])
-            t[posHueco.fila][posHueco.columna] = j.tablero[posEnemigo.fila][posEnemigo.columna]
-            t[posEnemigo.fila][posEnemigo.columna] = piezaJugador
-            pasosHechos = pasosPrevios + 2            
+    if (m.accion == MOVER_A_SECAS):
+        t[posDestino.fila][posDestino.columna] = piezaJugador
+        t[m.origen.fila][m.origen.columna] = VACIA
+        pasosHechos = pasosPrevios + 1
+    elif (m.accion == ARRASTRAR):
+        posEnemigo = posicion_vecina_hacia(m.origen, opuesta(m.pasos[1]))
+        t[m.origen.fila][m.origen.columna] = casilla_en_posicion(t, posEnemigo)
+        t[posDestino.fila][posDestino.columna] = piezaJugador
+        t[posEnemigo.fila][posEnemigo.columna] = VACIA
+        pasosHechos = pasosPrevios + 2
+    else:
+        posEnemigo = posicion_vecina_hacia(m.origen, m.pasos[0])
+        t[m.origen.fila][m.origen.columna] = VACIA
+        posHueco : Posicion = posicion_vecina_hacia(posEnemigo, m.pasos[1])
+        t[posHueco.fila][posHueco.columna] = j.tablero[posEnemigo.fila][posEnemigo.columna]
+        t[posEnemigo.fila][posEnemigo.columna] = piezaJugador
+        pasosHechos = pasosPrevios + 2
 
     turnoNuevo : Color = j.turno
 
@@ -692,14 +696,57 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
         pasosHechos = 0
 
     res : Juego = Juego(t, turnoNuevo, pasosHechos)
+    assert (juego_bien_formado(res))
     return res
 
 #### Ejercicio 7
 
-"""
+def es_inicio_de_turno(j: Juego, col: Color) -> bool:
+    return j.turno == col and j.pasos_consumidos == 0
+
+def hay_figura_de_color(t: Tablero, pos: Posicion, fig: Figura, col: Color) -> bool:
+    return hay_pieza_de_color(t, pos, col) and casilla_en_posicion(t,pos).figura == fig
+
+def hay_conejo_en_tablero(j: Juego, col: Color) -> bool:
+    res : bool = False
+    for fila in range(len(j.tablero)):
+        for columna in range(len(j.tablero[fila])):
+            if(hay_figura_de_color(j.tablero, Posicion(fila, columna), CONEJO, col)): res = True
+    return res
+
+def posicion_en_fila_inicial(pos: Posicion, col: Color) -> bool:
+    res : bool = False
+    if(col == DORADO): res = pos.fila == 0
+    else: res = pos.fila == 7
+    return res
+
+def hay_conejo_en_fila_inicial_oponente(j: Juego, col: Color):
+    res: bool = False
+    for fila in range(len(j.tablero)):
+        for columna in range(len(j.tablero[fila])):
+            pos: Posicion = Posicion(fila, columna)
+            if (posicion_en_fila_inicial(pos, oponente(col)) and hay_figura_de_color(j.tablero, pos, CONEJO, col)): res = True
+    return res
+
+def reune_condiciones_de_ganar(j: Juego, col: Color):
+    return hay_conejo_en_fila_inicial_oponente(j, col) or not hay_conejo_en_tablero(j, oponente(col))
+
+def reune_condiciones_de_ganar_exclusivas(j: Juego, col: Color):
+    return reune_condiciones_de_ganar(j, col) or not reune_condiciones_de_ganar(j, oponente(col))
+
+def es_jugador_ganador(j: Juego, col: Color):
+    return (es_inicio_de_turno(j, oponente(col)) and reune_condiciones_de_ganar(j, col)) or (es_inicio_de_turno(j, col) and reune_condiciones_de_ganar_exclusivas(j, col))
+
 def hay_ganador_determinado(j : Juego) -> bool:
-    raise Exception("No implementado")
+    assert (juego_bien_formado(j))
+    res: bool = False
+    for col in Color:
+        if(es_jugador_ganador(j, col)): res = True
+    return res
 
 def ganador_del_juego(j : Juego) -> Color:
-    raise Exception("No implementado")
-"""
+    assert(juego_bien_formado(j) and hay_ganador_determinado(j))
+    res: Color = DORADO
+    for col in Color:
+        if(es_jugador_ganador(j, col)): res = col
+    return res
