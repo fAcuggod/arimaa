@@ -80,7 +80,7 @@ class test_posicion_en_tablero(unittest.TestCase):
     def test_borde_0_0(self):
         self.assertTrue(posicion_en_tablero(Posicion(0,0)))
     def test_borde_8_8(self):
-        self.assertTrue(posicion_en_tablero(Posicion(8,8)))
+        self.assertTrue(posicion_en_tablero(Posicion(7,7)))
     def test_afuera_fila(self):
         self.assertFalse(posicion_en_tablero(Posicion(-2,3)))
     def test_afuera_columna(self):
@@ -1180,7 +1180,7 @@ class test_es_tablero_poniendo_pieza(unittest.TestCase):
               '--------', #0
               #01234567
             ])
-        
+
         self.assertTrue(es_tablero_poniendo_pieza(t0, t1, Posicion(7,0),CABALLO,DORADO))
     def test_tablero_vacio_pongo_caballo_otro_color(self):
         t0:Tablero = leer_tablero([
@@ -1205,7 +1205,7 @@ class test_es_tablero_poniendo_pieza(unittest.TestCase):
               '--------', #0
               #01234567
             ])
-        
+
         self.assertFalse(es_tablero_poniendo_pieza(t0, t1, Posicion(7,0),CABALLO,DORADO))     
     def test_tablero_vacio_pongo_caballo_otro_animal(self):
         t0:Tablero = leer_tablero([
@@ -1230,7 +1230,7 @@ class test_es_tablero_poniendo_pieza(unittest.TestCase):
               '--------', #0
               #01234567
             ])
-        
+
         self.assertFalse(es_tablero_poniendo_pieza(t0, t1, Posicion(7,0),CABALLO,DORADO))
 
 class test_es_tablero_trasladando_pieza(unittest.TestCase):
@@ -1257,7 +1257,7 @@ class test_es_tablero_trasladando_pieza(unittest.TestCase):
               '--------', #0
               #01234567
             ])
-        
+
         self.assertTrue(es_tablero_trasladando_pieza(t0, t1, Posicion(6,2),Posicion(7,2)))
     def test_muevo_un_caballo(self):
         t0:Tablero = leer_tablero([
@@ -1300,7 +1300,7 @@ class test_tablero_post_mover_a_secas(unittest.TestCase):
               #01234567
             ])
         self.assertTrue(tablero_post_mover_a_secas(t0, t1, Posicion(6,7), SUR))
-    
+
     def test_muevo_un_conejo_dorado(self):
         t0:Tablero = tablero_8x8_inicial_ejemplo()
         t1:Tablero = leer_tablero([
@@ -1331,7 +1331,6 @@ class test_tablero_post_mover_a_secas(unittest.TestCase):
             ])
         self.assertFalse(tablero_post_mover_a_secas(t0, t1, Posicion(1,3), NORTE))
 
-    
 class test_tablero_trasladando_pieza(unittest.TestCase):
     def test_muevo_un_conejo(self):
         t0:Tablero = tablero_8x8_inicial_ejemplo()
@@ -1449,7 +1448,7 @@ class test_tablero_post_arrastrar(unittest.TestCase):
                #01234567
              ])
         self.assertTrue(tablero_post_arrastrar(t0, t1, Posicion(3,6), ESTE, SUR))
-    
+
 class test_tablero_post_empujar(unittest.TestCase):
     def test_empujo_a_un_conejo(self):
         t0 = leer_tablero([
@@ -1499,7 +1498,7 @@ class test_tablero_post_empujar(unittest.TestCase):
                #01234567
              ])
         self.assertTrue(tablero_post_empujar(t0, t1, Posicion(4,4),OESTE,NORTE))
-        
+
 class test_juego_post_movimiento(unittest.TestCase):
     def test_juego_bien(self):
         t0 = leer_tablero([
@@ -1615,7 +1614,7 @@ class test_juego_post_movimiento(unittest.TestCase):
 
 
 class test_realizar_movimiento(unittest.TestCase):
- 
+
     def test_mover_a_secas(self):
         t0 = leer_tablero([
                'rrrrrrrr', #7
@@ -1639,8 +1638,8 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, PLATEADO, 0) 
-        jN = Juego(tN, PLATEADO, 1) 
+        j0 = Juego(t0, PLATEADO, 0)
+        jN = Juego(tN, PLATEADO, 1)
         mN = Movimiento(MOVER_A_SECAS, Posicion(4, 3), [NORTE])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
@@ -1667,8 +1666,8 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, PLATEADO, 0) 
-        jN = Juego(tN, PLATEADO, 2) 
+        j0 = Juego(t0, PLATEADO, 0)
+        jN = Juego(tN, PLATEADO, 2)
         mN = Movimiento(ARRASTRAR, Posicion(4, 3), [NORTE, OESTE])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
@@ -1695,8 +1694,8 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, DORADO, 0) 
-        jN = Juego(tN, DORADO, 2) 
+        j0 = Juego(t0, DORADO, 0)
+        jN = Juego(tN, DORADO, 2)
         mN = Movimiento(EMPUJAR, Posicion(4, 4), [OESTE, SUR])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
@@ -1723,17 +1722,262 @@ class test_realizar_movimiento(unittest.TestCase):
                'RRRRRRRR', #0
                #01234567
              ])
-        j0 = Juego(t0, DORADO, 2) 
-        jN = Juego(tN, PLATEADO, 0) 
+        j0 = Juego(t0, DORADO, 2)
+        jN = Juego(tN, PLATEADO, 0)
         mN = Movimiento(EMPUJAR, Posicion(4, 2), [ESTE, SUR])
         self.assertTrue(puede_realizar_movimiento(j0, mN))
         self.assertEqual(realizar_movimiento(j0, mN), jN)
 
 
-
-
 #### Ejercicio 7
 
+class test_posicion_en_fila_inicial(unittest.TestCase): # (test func. aux)
+
+    def test_posicion_en_fila_inicial_dorado_ok(self):
+        self.assertTrue(posicion_en_fila_inicial(Posicion(0, 1), DORADO))
+    def test_posicion_en_fila_inicial_plateado_ok(self):
+        self.assertTrue(posicion_en_fila_inicial(Posicion(7, 0), PLATEADO))
+    def test_posicion_en_fila_inicial_dorado_mal(self):
+        self.assertFalse(posicion_en_fila_inicial(Posicion(4, 3), DORADO))
+    def test_posicion_en_fila_inicial_plateado_mal(self):
+        self.assertFalse(posicion_en_fila_inicial(Posicion(6, 6), PLATEADO))
+
+class test_hay_conejo_en_la_fila_inicial_oponente(unittest.TestCase): # (test func. aux)
+
+    def test_hay_conejo_en_la_fila_inicial_oponente_ok(self):
+        t = leer_tablero([
+              '-----R--', #7
+              '--------', #6
+              '-Cr--ch-', #5
+              '--------', #4
+              '--------', #3
+              '--Ce-d--', #2
+              '-----H--', #1
+              '--------', #0
+              #01234567
+            ])
+        j = Juego(t, DORADO, 0)
+        self.assertTrue(hay_conejo_en_la_fila_inicial_oponente(j, DORADO))
+    def test_hay_conejo_en_la_fila_inicial_oponente_mal(self):
+        t = leer_tablero([
+              '--------', #7
+              '--------', #6
+              '-Cr--ch-', #5
+              '--------', #4
+              '--------', #3
+              '--Ce-d--', #2
+              'R----H--', #1
+              '--------', #0
+              #01234567
+            ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertFalse(hay_conejo_en_la_fila_inicial_oponente(j, PLATEADO))
+
+class test_hay_conejo_en_tablero(unittest.TestCase): # (test func. aux)
+
+    def test_hay_conejo_en_tablero_ok(self):
+        t = leer_tablero([
+                      '--------', #7
+                      '----R---', #6
+                      '-Cr--ch-', #5
+                      '--------', #4
+                      '--------', #3
+                      '--Ce-d--', #2
+                      'R----H--', #1
+                      '--------', #0
+                      #01234567
+                    ])
+        j = Juego(t, DORADO, 0)
+        self.assertTrue(hay_conejo_en_tablero(j, DORADO))
+    def test_hay_conejo_en_tablero_mal(self):
+        t = leer_tablero([
+                      '--------', #7
+                      '--------', #6
+                      '-Cd--ch-', #5
+                      '--------', #4
+                      'R------m', #3
+                      '--Ce-d--', #2
+                      'R----H--', #1
+                      '--------', #0
+                      #01234567
+                    ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertFalse(hay_conejo_en_tablero(j, PLATEADO))
+
+class test_es_inicio_de_turno(unittest.TestCase): # (test func. aux)
+
+    def test_es_inicio_de_turno_ok(self):
+        j = Juego(tablero_8x8_inicial_ejemplo, DORADO, 0)
+        self.assertTrue(es_inicio_de_turno(j, DORADO))
+    def test_es_inicio_de_turno_mal(self):
+        j = Juego(tablero_8x8_inicial_ejemplo, PLATEADO, 2)
+        self.assertFalse(es_inicio_de_turno(j, PLATEADO))
+
+class test_reune_condiciones_de_ganar(unittest.TestCase): # (test func. aux)
+
+    def test_reune_condiciones_de_ganar_ok(self):
+        t = leer_tablero([
+                      '-------R', #7
+                      '--------', #6
+                      '-Cr---E-', #5
+                      '------d-', #4
+                      '--------', #3
+                      '--Ce-d--', #2
+                      'R----H--', #1
+                      '--------', #0
+                      #01234567
+                    ])
+        j = Juego(t, DORADO, 0)        
+        self.assertTrue(reune_condiciones_de_ganar(j, DORADO))
+    def test_reune_condiciones_de_ganar_ok_2(self):
+        t = leer_tablero([
+                      '--------', #7
+                      '--------', #6
+                      '-C---ch-', #5
+                      '--------', #4
+                      '--------', #3
+                      '--Ce-d--', #2
+                      'R--R-H--', #1
+                      '--------', #0
+                      #01234567
+                    ])
+        j = Juego(t, DORADO, 1)
+        self.assertTrue(reune_condiciones_de_ganar(j, DORADO))
+    def test_no_reune_condiciones_de_ganar(self):
+        t = leer_tablero([
+                      '--------', #7
+                      '--------', #6
+                      '-Cr--ch-', #5
+                      '--------', #4
+                      '--------', #3
+                      '--Ce-d--', #2
+                      'R----H--', #1
+                      '--------', #0
+                      #01234567
+                    ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertFalse(reune_condiciones_de_ganar(j, PLATEADO))
+
+class test_reune_condiciones_de_ganar_exclusivas(unittest.TestCase): # (test func. aux)
+
+    def test_reune_condiciones_de_ganar_exclusivas_dorado_ok(self):
+        t = leer_tablero([
+                      '----R---', #7
+                      '--------', #6
+                      '-Cr--ch-', #5
+                      '--------', #4
+                      '--------', #3
+                      '--Ce-d--', #2
+                      'R----H--', #1
+                      '--------', #0
+                      #01234567
+                    ])
+        j = Juego(t, DORADO, 0)
+        self.assertTrue(reune_condiciones_de_ganar_exclusivas(j, DORADO))
+    def test_no_reune_condiciones_de_ganar_exclusivas(self):
+        t = leer_tablero([
+                      '-R------', #7
+                      '--------', #6
+                      '-Cr--ch-', #5
+                      '--------', #4
+                      '--------', #3
+                      '--Ce-d--', #2
+                      'R----H--', #1
+                      'r--r----', #0
+                      #01234567
+                    ])
+        j = Juego(t, PLATEADO, 1)
+        self.assertFalse(reune_condiciones_de_ganar_exclusivas(j, PLATEADO))
+
+class test_es_jugador_ganador(unittest.TestCase): # (test func. aux)
+
+    def test_dorado_es_jugador_ganador(self):
+        t = leer_tablero([
+                              '-R------', #7
+                              '--------', #6
+                              '-Cr--ch-', #5
+                              '--------', #4
+                              '--------', #3
+                              '--Ce-d--', #2
+                              'R----H--', #1
+                              '--------', #0
+                              #01234567
+                            ])
+        j = Juego(t, DORADO, 0)
+        self.assertTrue(es_jugador_ganador(j, DORADO))
+    def test_plateado_es_jugador_ganador(self):
+        t = leer_tablero([
+                              '--------', #7
+                              '--------', #6
+                              '-Cr--ch-', #5
+                              '--------', #4
+                              '--------', #3
+                              '--Ce-d--', #2
+                              'R----H--', #1
+                              'r--r----', #0
+                              #01234567
+                            ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertTrue(es_jugador_ganador(j, PLATEADO))
+    def test_no_es_jugador_ganador(self):
+        t = leer_tablero([
+                              '--------', #7
+                              '--------', #6
+                              '-Cr--ch-', #5
+                              '--------', #4
+                              '--------', #3
+                              '--Ce-d--', #2
+                              'R----H--', #1
+                              'r-------', #0
+                              #01234567
+                            ])
+        j = Juego(t, DORADO, 0)
+        self.assertFalse(es_jugador_ganador(j, DORADO))
+
+class test_hay_ganador_determinado(unittest.TestCase):
+
+    def test_hay_ganador_determinado_dorado(self):
+        t = leer_tablero([
+                              '-R------', #7
+                              '--------', #6
+                              '-Cr--ch-', #5
+                              '--------', #4
+                              '--------', #3
+                              '--Ce-d--', #2
+                              'R----H--', #1
+                              '--------', #0
+                              #01234567
+                            ])
+        j = Juego(t, DORADO, 0)
+        self.assertTrue(hay_ganador_determinado(j))
+    def test_hay_ganador_determinado_plateado(self):
+        t = leer_tablero([
+                              '--------', #7
+                              '--------', #6
+                              '-Cr--ch-', #5
+                              '--------', #4
+                              '--------', #3
+                              '--Ce-d--', #2
+                              'R----H--', #1
+                              'r-------', #0
+                              #01234567
+                            ])
+        j = Juego(t, PLATEADO, 0)
+        self.assertTrue(hay_ganador_determinado(j))
+    def test_no_hay_ganador_determinado(self):
+        t = leer_tablero([
+                              '--------', #7
+                              '--------', #6
+                              '-Cr--ch-', #5
+                              '--------', #4
+                              '--------', #3
+                              '--Ce-d--', #2
+                              'R----H--', #1
+                              '--------', #0
+                              #01234567
+                            ])
+        j = Juego(t, DORADO, 0)
+        self.assertFalse(hay_ganador_determinado(j))
 class test_ganador_del_juego(unittest.TestCase):
 
     def test_promueve_conejo_dorado_turno_del_oponente(self):

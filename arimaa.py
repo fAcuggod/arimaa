@@ -484,8 +484,59 @@ def realizar_movimiento(j : Juego, m : Movimiento) -> Juego:
 
 #### Ejercicio 7
 
+def posicion_en_fila_inicial(pos: Posicion, col: Color) -> bool:
+    # (func. aux) decide si dada la posición pos del color col está en su respectiva fila inicial
+    if col == DORADO and pos.fila != 0 or col == PLATEADO and pos.fila != 7:
+        return False
+    return True
+
+def hay_conejo_en_la_fila_inicial_oponente(j: Juego, col: Color) -> bool:
+    # (func. aux) decide si existe una figura CONEJO del jugador col en la fila inicial del jugador oponente(col)
+    for pos_fila in range(ALTO):
+        for pos_columna in range(ANCHO):
+            pos_prima: Posicion = Posicion(pos_fila, pos_columna)
+            c1: bool = posicion_en_fila_inicial(pos_prima, oponente(col))
+            c2: bool = hay_figura_de_color(j.tablero, pos_prima, CONEJO, col)
+            if c1 and c2:
+                return True
+    return False
+
+def hay_conejo_en_tablero(j: Juego, col: Color) -> bool:
+    # (func. aux) decide si existe una figura CONEJO del jugador col en alguna posición pos_prima del j.tablero
+    for pos_fila in range(ALTO):
+        for pos_columna in range(ANCHO):
+            pos_prima: Posicion = Posicion(pos_fila, pos_columna)
+            if hay_figura_de_color(j.tablero, pos_prima, CONEJO, col):
+                return True
+    return False
+
+def es_inicio_de_turno(j: Juego, col: Color) -> bool:
+    # (func. aux) decide si el jugador col está en su inicio de turno en el juego j
+    return j.turno == col and j.pasos_consumidos == 0
+
+def reune_condiciones_de_ganar(j: Juego, col: Color) -> bool:
+    # (func. aux) decide si el jugador col reúne las condiciones necesarias para ganar el juego j
+    c1: bool = hay_conejo_en_la_fila_inicial_oponente(j, col)
+    c2: bool = not hay_conejo_en_tablero(j, oponente(col))
+    return c1 or c2
+
+def reune_condiciones_de_ganar_exclusivas(j: Juego, col: Color) -> bool:
+    # (func. aux) decide si el jugador col reúne las condiciones necesarias para ganar el juego j
+    #             mientras que el jugador oponente(col) no
+    return reune_condiciones_de_ganar(j, col) and not reune_condiciones_de_ganar(j, oponente(col))
+
+def es_jugador_ganador(j: Juego, col: Color) -> bool:
+    # (func. aux) decide si el jugador col es ganador del juego j
+    c1: bool = es_inicio_de_turno(j, oponente(col)) and reune_condiciones_de_ganar(j, col)
+    c2: bool = es_inicio_de_turno(j, col) and reune_condiciones_de_ganar_exclusivas(j, col)
+    return c1 or c2
+
 def hay_ganador_determinado(j : Juego) -> bool:
-    raise Exception("No implementado")
+    assert juego_bien_formado(j)
+    return es_jugador_ganador(j, DORADO) or es_jugador_ganador(j, PLATEADO)
 
 def ganador_del_juego(j : Juego) -> Color:
-    raise Exception("No implementado")
+    assert juego_bien_formado(j) and hay_ganador_determinado(j)
+    if es_jugador_ganador(j, DORADO):
+        return DORADO
+    return PLATEADO
